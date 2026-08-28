@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Levels — Galaxy Runner</title>
+
+  <!-- reuse the project's main style and ui-fix (if present) for consistent look -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="ui-fix.css" />
+  <!-- page-specific small tweaks -->
+  <link rel="stylesheet" href="levels.css" />
+</head>
+<body>
+  <div id="levels-root">
+    <div class="frame-photo-wrap levels-frame">
+      <!-- Background image set via CSS -->
+      <!-- Top left back -->
+      <button id="btn-back" class="frame-hotspot" style="left:2.2%;top:3.9%;width:11.5%;height:9.5%;" title="Back">Back</button>
+      <!-- Top right settings/upgrade -->
+      <button id="btn-settings" class="frame-hotspot" style="left:80.8%;top:3.9%;width:9.5%;height:12.0%;" title="Settings">Settings</button>
+      <button id="btn-upgrade" class="frame-hotspot" style="left:91.0%;top:3.9%;width:7.5%;height:12.0%;" title="Upgrade">Upgrade</button>
+
+      <!-- Planet hotspots (these coordinates should overlay the framed planet cards) -->
+      <button id="level-1" class="frame-hotspot planet-hotspot" style="left:7.6%;top:21.0%;width:20.6%;height:31.0%;" title="Level 1: The Moon">1</button>
+      <button id="level-2" class="frame-hotspot planet-hotspot" style="left:31.8%;top:21.0%;width:20.6%;height:31.0%;" title="Level 2: Mars">2</button>
+      <button id="level-3" class="frame-hotspot planet-hotspot" style="left:56.0%;top:21.0%;width:20.6%;height:31.0%;" title="Level 3: Venus">3</button>
+      <button id="level-4" class="frame-hotspot planet-hotspot" style="left:79.6%;top:21.0%;width:16.8%;height:31.0%;" title="Level 4: Mercury">4</button>
+
+      <button id="level-5" class="frame-hotspot planet-hotspot" style="left:7.6%;top:55.0%;width:20.6%;height:31.0%;" title="Level 5: Jupiter">5</button>
+      <button id="level-6" class="frame-hotspot planet-hotspot" style="left:31.8%;top:55.0%;width:20.6%;height:31.0%;" title="Level 6: Saturn">6</button>
+      <button id="level-7" class="frame-hotspot planet-hotspot" style="left:56.0%;top:55.0%;width:20.6%;height:31.0%;" title="Level 7: Uranus">7</button>
+      <button id="level-8" class="frame-hotspot planet-hotspot" style="left:79.6%;top:55.0%;width:16.8%;height:31.0%;" title="Level 8: Neptune">8</button>
+
+      <!-- optional bottom CTA area hotspots (if you want them actionable) -->
+      <button id="btn-collect-stars" class="frame-hotspot" style="left:29.5%;top:88.0%;width:40.0%;height:8.5%;" title="Stars collected">Stars</button>
+    </div>
+  </div>
+
+  <!-- helper that converts percentage inline styles into pixel positions on the rendered image -->
+  <script src="hotspot-fix.js"></script>
+
+  <!-- levels page logic -->
+  <script src="levels.js"></script>
+</body>
+</html>
