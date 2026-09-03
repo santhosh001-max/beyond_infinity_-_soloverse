@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
 <title>Galaxy Runner - 2D Space Shooter</title>
 <link rel="stylesheet" href="style.css" />
-<link rel="stylesheet" href="ui-fix.css" />
 </head>
 <body>
 
@@ -18,7 +17,7 @@
         <div class="loading-track" style="left:19.5%;top:87.0%;width:60.6%;height:4.0%;">
           <div id="loading-fill"></div>
         </div>
-        <div id="loading-percent" style="left:19.5%;top:92.0%;width:60.6%;height:5%">0%</div>
+        <div id="loading-percent" style="left:19.5%;top:92.0%;width:60.6%;height:5%;">0%</div>
       </div>
     </div>
 
@@ -60,29 +59,8 @@
         <button id="btn-settings-levels" class="icon-btn" title="Settings">⚙️</button>
         <button id="btn-shop-levels" class="icon-btn" title="Shipyard">🛠️</button>
       </div>
-
-      <div class="frame-photo-wrap">
-        <!-- Use the provided full artwork image to render level select; hotspots overlay this image -->
-        <img id="levels-art-inline" src="assets/ui/levels_screen.jpg" alt="Levels" />
-
-        <!-- Top-left Back, Top-right Settings/Upgrade -->
-        <button id="btn-back" class="frame-hotspot" style="left:2.2%;top:3.9%;width:11.5%;height:9.5%;" title="Back"></button>
-        <button id="btn-settings" class="frame-hotspot" style="left:80.8%;top:3.9%;width:9.5%;height:12.0%;" title="Settings"></button>
-        <button id="btn-upgrade" class="frame-hotspot" style="left:91.0%;top:3.9%;width:7.5%;height:12.0%;" title="Upgrade"></button>
-
-        <!-- Planet hotspots (1..8) -->
-        <button id="level-1" class="frame-hotspot" style="left:7.6%;top:21.0%;width:20.6%;height:31.0%;" title="Level 1"></button>
-        <button id="level-2" class="frame-hotspot" style="left:31.8%;top:21.0%;width:20.6%;height:31.0%;" title="Level 2"></button>
-        <button id="level-3" class="frame-hotspot" style="left:56.0%;top:21.0%;width:20.6%;height:31.0%;" title="Level 3"></button>
-        <button id="level-4" class="frame-hotspot" style="left:79.6%;top:21.0%;width:16.8%;height:31.0%;" title="Level 4"></button>
-
-        <button id="level-5" class="frame-hotspot" style="left:7.6%;top:55.0%;width:20.6%;height:31.0%;" title="Level 5"></button>
-        <button id="level-6" class="frame-hotspot" style="left:31.8%;top:55.0%;width:20.6%;height:31.0%;" title="Level 6"></button>
-        <button id="level-7" class="frame-hotspot" style="left:56.0%;top:55.0%;width:20.6%;height:31.0%;" title="Level 7"></button>
-        <button id="level-8" class="frame-hotspot" style="left:79.6%;top:55.0%;width:16.8%;height:31.0%;" title="Level 8"></button>
-
-      </div>
-
+      <h2>SELECT LEVEL</h2>
+      <div id="level-list"></div>
       <button class="back-btn" id="btn-level-select-back">◀ BACK</button>
     </div>
 
@@ -213,95 +191,5 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
   <script src="game.js"></script>
-  <script src="hotspot-fix.js"></script>
-
-  <!-- Temporary hotspot debug UI -->
-  <style id="hotspot-log-style">
-    #hotspot-log { position: fixed; right: 12px; top: 12px; width: 380px; max-height: 62vh; overflow: auto; background: rgba(2,10,20,0.92); color: #bdf1ff; border: 1px solid rgba(0,200,255,0.18);[...] 
-    #hotspot-log h4 { margin: 0 0 8px 0; font-size: 13px; }
-    #hotspot-log button { margin-right: 6px; font-size: 12px; }
-    #hotspot-log pre { white-space: pre-wrap; word-break: break-word; margin-top: 8px; }
-    #hotspot-log.hidden { display: none !important; }
-  </style>
-  <div id="hotspot-log" class="hidden" aria-hidden="true">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-      <h4>Hotspot Inspector</h4>
-      <div>
-        <button id="hotspot-scan">Scan</button>
-        <button id="hotspot-toggle-visual">Toggle Visual</button>
-        <button id="hotspot-copy">Copy</button>
-        <button id="hotspot-close">✖</button>
-      </div>
-    </div>
-    <div id="hotspot-summary" style="margin-top:6px;color:#9ad8ff;">Found: <span id="hotspot-count">0</span></div>
-    <pre id="hotspot-list" style="margin-top:8px;">(no data)</pre>
-  </div>
-  <script>
-    (function(){
-      const log = document.getElementById('hotspot-log');
-      const scanBtn = document.getElementById('hotspot-scan');
-      const copyBtn = document.getElementById('hotspot-copy');
-      const closeBtn = document.getElementById('hotspot-close');
-      const toggleVisual = document.getElementById('hotspot-toggle-visual');
-      const listPre = document.getElementById('hotspot-list');
-      const countEl = document.getElementById('hotspot-count');
-
-      function scanHotspots(){
-        const nodes = Array.from(document.querySelectorAll('.frame-hotspot, .title-hotspot'));
-        const results = nodes.map(el=>{
-          const r = el.getBoundingClientRect();
-          const cs = getComputedStyle(el);
-          return {
-            id: el.id || null,
-            title: el.title || null,
-            style: el.getAttribute('style') || null,
-            left: Math.round(r.left), top: Math.round(r.top), width: Math.round(r.width), height: Math.round(r.height),
-            visible: cs.display !== 'none' && cs.visibility !== 'hidden' && r.width>0 && r.height>0
-          };
-        });
-        countEl.textContent = results.length;
-        if(results.length===0) listPre.textContent = '(no hotspots found)';
-        else listPre.textContent = results.map((r,i)=>{
-          return `${i+1}. id=${r.id} title=${r.title} style=${r.style} \n   rect={left:${r.left},top:${r.top},w:${r.width},h:${r.height}} visible=${r.visible}`;
-        }).join('\n\n');
-        console.log('Hotspot scan:', results);
-        return results;
-      }
-
-      scanBtn.onclick = scanHotspots;
-      closeBtn.onclick = ()=>{ log.classList.add('hidden'); log.setAttribute('aria-hidden','true'); };
-      copyBtn.onclick = ()=>{
-        const txt = listPre.textContent;
-        navigator.clipboard && navigator.clipboard.writeText(txt).then(()=>{
-          copyBtn.textContent = 'Copied';
-          setTimeout(()=>copyBtn.textContent='Copy',900);
-        }, ()=>{ alert('Copy failed - please use console or select+copy manually.'); });
-      };
-
-      let visualOn = false;
-      toggleVisual.onclick = ()=>{
-        visualOn = !visualOn;
-        document.querySelectorAll('.frame-hotspot, .title-hotspot').forEach(b=>{
-          if(visualOn) b.classList.add('debug-visible'); else b.classList.remove('debug-visible');
-        });
-        toggleVisual.textContent = visualOn ? 'Hide Visual' : 'Toggle Visual';
-      };
-
-      // Keyboard shortcut: Ctrl+H toggles panel
-      window.addEventListener('keydown', (e)=>{
-        if(e.ctrlKey && e.key.toLowerCase()==='h'){
-          if(log.classList.contains('hidden')){ log.classList.remove('hidden'); log.setAttribute('aria-hidden','false'); scanHotspots(); }
-          else { log.classList.add('hidden'); log.setAttribute('aria-hidden','true'); }
-        }
-      });
-
-      // Expose helper for console use
-      window.hotspotInspector = {scan: scanHotspots};
-
-      // If you want the panel visible by default while debugging, uncomment:
-      // log.classList.remove('hidden'); scanHotspots();
-    })();
-  </script>
-  <script src="levels.js"></script>
 </body>
 </html>

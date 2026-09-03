@@ -27,6 +27,24 @@ Several more controls now use full art instead of emoji/text:
 
 All click behavior is unchanged — only the visuals were swapped in.
 
+## Enemy ships: Easy / Normal / Hard tiers
+Aliens are no longer a single reused sprite - there are now three distinct
+enemy ship designs, one per difficulty tier:
+- **Easy** ship - destroyed in **3** beam hits
+- **Normal** ship - destroyed in **4** beam hits
+- **Hard** ship - destroyed in **5** beam hits
+
+Which tiers can spawn depends on difficulty/progress, gating upward (never
+downward) exactly like the request specified:
+- **Infinity mode**: Easy difficulty → only the Easy ship appears. Normal →
+  Easy and Normal ships both appear. Hard → all three tiers appear.
+- **Levels mode**: the same gating is spread across the 8 planets - Levels
+  1-2 → Easy ship only, Levels 3-5 → Easy + Normal, Levels 6-8 → all three.
+
+A hit that doesn't destroy an alien dims it slightly and plays a lighter
+impact sound (same pattern as the crystal obstacles); only the killing hit
+triggers the full explosion + score.
+
 ## Obstacles: crystal ruins (multi-hit, bigger, slower)
 Rocks were replaced with 6 crystal-obstacle sprites (blue/purple elongated
 ruin blocks, blue/purple obelisks, a blue crystal spire, an icy spire).
