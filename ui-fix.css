@@ -72,11 +72,6 @@
   outline: none !important;
 }
 
-/* If an ancestor created a new stacking context (transform, opacity < 1), ensure UI still floats above */
-#game-container > * {
-  z-index: unset; /* let individual rules above apply */
-}
-
 /* Provide a fallback visible style for small circular control buttons */
 .icon-btn, .ctrl-btn {
   background: rgba(255,255,255,0.06) !important;
