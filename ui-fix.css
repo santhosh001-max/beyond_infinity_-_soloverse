@@ -129,3 +129,16 @@
 #game-container { outline: 1px dashed rgba(255,255,255,0.04); }
 #hud { outline: 1px dashed rgba(255,0,0,0.06); }
 */
+
+/* FINAL FIX: keep frame hotspots completely invisible */
+button.frame-hotspot,
+button.title-hotspot {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: transparent !important;
+    opacity: 1 !important;
+}
