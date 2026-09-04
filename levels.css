@@ -1,26 +1,196 @@
-/* Levels Screen Styles - Background Image Integration */
+/*
+ * Beyond Infinity: Soloverse
+ * Levels-page-only visual fix.
+ *
+ * IMPORTANT:
+ * - Does not modify the game's other screens.
+ * - Keeps the existing level button IDs (level-1 ... level-8).
+ * - Uses the new uploaded background only on .levels-frame.
+ * - Uses separate level-card images so cards are never cropped.
+ */
 
-/* Frame wrapper with levels background image */
+/* The uploaded 1536x1024 frame is the complete levels-page background. */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+#levels-root {
+  width: 100vw;
+  height: 100vh;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Preserve the frame as a complete 16:9-ish game screen.
+   contain prevents any part of the uploaded frame from being cropped. */
 .frame-photo-wrap.levels-frame {
-  background-image: url('assets/levels/levels1to8.jpeg');
-  background-size: cover;
-  background-position: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  background-image: url("assets/levels/levels1to8.jpg");
   background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100% 100%;
 }
 
-/* Hide old image element if it exists */
-.frame-photo-wrap.levels-frame img {
-  display: none !important;
+/* ---------- Top navigation hotspots ----------
+   The visible BACK / SETTINGS / UPGRADE artwork is already inside
+   the background image. These buttons are transparent click targets. */
+
+.frame-hotspot.top-hotspot {
+  position: absolute !important;
+  z-index: 20 !important;
+
+  margin: 0;
+  padding: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Level button hover effects */
-.frame-hotspot.planet-hotspot:hover {
-  filter: drop-shadow(0 0 15px rgba(0, 229, 255, 0.5));
-  transform: scale(1.05);
+/* Coordinates are based on the uploaded 1536x1024 frame. */
+.back-hotspot {
+  left: 1.5%;
+  top: 3.5%;
+  width: 13.2%;
+  height: 10.5%;
 }
 
-/* Level button active state */
-.frame-hotspot.planet-hotspot:active {
-  transform: scale(0.95);
-  filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.8));
+.settings-hotspot {
+  left: 79.0%;
+  top: 3.2%;
+  width: 10.0%;
+  height: 12.5%;
+}
+
+.upgrade-hotspot {
+  left: 89.3%;
+  top: 3.2%;
+  width: 9.2%;
+  height: 12.5%;
+}
+
+/* ---------- Level cards ----------
+   Grid area is intentionally inside the clear center of the new frame.
+   Each button is a flex box and the image uses contain, so NOTHING is
+   stretched or clipped. */
+
+.levels-grid {
+  position: absolute;
+  z-index: 10;
+
+  left: 5.2%;
+  right: 5.2%;
+  top: 20.0%;
+  bottom: 10.5%;
+
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+
+  column-gap: 1.8%;
+  row-gap: 2.0%;
+
+  align-items: center;
+  justify-items: center;
+}
+
+/* Keep the existing IDs but make the visible art come from the new cards. */
+.level-button {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  margin: 0;
+
+  border: 0;
+  outline: 0;
+  background: transparent;
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.level-button img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  /* Critical: never crop the card. */
+  object-fit: contain;
+  object-position: center;
+
+  user-select: none;
+  -webkit-user-drag: none;
+
+  transition: transform 120ms ease, filter 120ms ease;
+}
+
+.level-button:hover img {
+  transform: scale(1.025);
+  filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.55));
+}
+
+.level-button:active img {
+  transform: scale(0.975);
+  filter: drop-shadow(0 0 16px rgba(0, 210, 255, 0.75));
+}
+
+.level-button:focus-visible img {
+  filter: drop-shadow(0 0 12px rgba(0, 210, 255, 0.8));
+}
+
+/* ---------- Responsive protection ----------
+   On narrower landscape screens, slightly reduce the grid footprint.
+   The cards still use object-fit: contain. */
+
+@media (max-width: 1100px) {
+  .levels-grid {
+    left: 4%;
+    right: 4%;
+    top: 19%;
+    bottom: 9%;
+    column-gap: 1.2%;
+    row-gap: 1.0%;
+  }
+}
+
+@media (orientation: portrait) {
+  /* Portrait: 2 columns so the cards remain usable instead of being
+     squeezed/cropped into four tiny columns. */
+  .frame-photo-wrap.levels-frame {
+    background-size: cover;
+  }
+
+  .levels-grid {
+    left: 5%;
+    right: 5%;
+    top: 17%;
+    bottom: 7%;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+
+    column-gap: 2%;
+    row-gap: 0.5%;
+  }
 }
