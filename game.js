@@ -184,14 +184,14 @@ const Sound = {
     if (this._filesReady) return;
     this._filesReady = true;
     this.musicEl = new Audio('assets/audio/music.mp3');
-    this.musicEl.loop = false; // manual loop below, with a gap before repeating
+    this.musicEl.loop = false;
     this.musicEl.volume = this.volume;
     this.musicEl.addEventListener('ended', () => {
       clearTimeout(this._musicGapTimer);
       if (this.musicOn && this._wantMusic) {
         this._musicGapTimer = setTimeout(() => {
           if (this.musicOn && this._wantMusic) this.musicEl.play().catch(() => {});
-        }, 3000); // few-second silent break before the track repeats
+        }, 3000);
       }
     });
     this.shootPool = [];
@@ -246,7 +246,7 @@ const Sound = {
     this._wantMusic = true;
     if (!this.musicOn) return;
     this.musicEl.volume = this.volume;
-    this.musicEl.play().catch(() => {}); // browsers require a user gesture first - retried on first tap
+    this.musicEl.play().catch(() => {});
   },
   stopMusic() {
     this._wantMusic = false;
@@ -275,8 +275,6 @@ const Sound = {
 const ASSET_PATHS = {
   bg: 'assets/bg-space.jpg',
   ships: { blue: CHAR_META.blue.img, purple: CHAR_META.purple.img },
-  // Each obstacle type has a fixed health (hits to destroy). Size is fixed
-  // per obstacle (no per-instance randomness) via sizeMul.
   rocks: [
     { src: 'assets/rocks/c1_purple.png', health: 2, sizeMul: 1.0 },
     { src: 'assets/rocks/c2_blue.png', health: 2, sizeMul: 1.0 },
@@ -288,9 +286,6 @@ const ASSET_PATHS = {
     { src: 'assets/rocks/c8_blue.png', health: 2, sizeMul: 1.0 },
     { src: 'assets/rocks/c9_blue.png', health: 2, sizeMul: 1.0 },
   ],
-  // Three enemy ship tiers, one per difficulty. Which tiers are allowed to
-  // spawn scales with difficulty (Infinity mode) or level number (Levels
-  // mode) - see alienTiersAvailable(). Health is how many beam hits destroy it.
   aliens: [
     { src: 'assets/aliens/easy.png', health: 3 },
     { src: 'assets/aliens/normal.png', health: 4 },
@@ -298,13 +293,6 @@ const ASSET_PATHS = {
   ],
   beams: { blue: 'assets/fx/beam_blue.png', purple: 'assets/fx/beam_purple.png' },
 };
-// UI screens (title, wizard frames, pause, level planets) are plain <img src>
-// tags in the HTML rather than canvas sprites, so the browser would normally
-// only start fetching them once each screen is actually shown - on a first
-// (uncached) visit that produced a blank flash while a screen's art was still
-// downloading. These are force-preloaded up front instead, during the boot
-// loading screen, so every screen's art is already in the browser cache by
-// the time it can possibly be shown.
 const UI_ASSET_PATHS = [
   'assets/ui/title_screen.jpg', 'assets/ui/frame_mode.jpg', 'assets/ui/frame_difficulty.jpg',
   'assets/ui/frame_players.jpg', 'assets/ui/frame_ship.jpg', 'assets/ui/frame_pause.jpg',
@@ -313,8 +301,8 @@ const UI_ASSET_PATHS = [
   'assets/levels/planet4_mercury.png', 'assets/levels/planet5_jupiter.png', 'assets/levels/planet6_saturn.png',
   'assets/levels/planet7_uranus.png', 'assets/levels/planet8_neptune.png',
 ];
-const SHIP_ROTATION_DEG = 0; // the blue/purple ship art is already drawn pointing straight up
-const ALIEN_ROTATION_DEG = 180; // enemy ships face downward, toward the player
+const SHIP_ROTATION_DEG = 0;
+const ALIEN_ROTATION_DEG = 180;
 
 const Images = { bg: null, ships: {}, aliens: [], rocks: [], beams: {} };
 function loadImage(src) {
@@ -325,9 +313,6 @@ function loadImage(src) {
     img.src = src;
   });
 }
-// Loads every image the app uses (gameplay sprites + UI screen art), calling
-// onProgress(loadedCount, totalCount) as each one finishes, so a loading
-// screen can show real progress instead of an indeterminate spinner.
 async function preloadAllAssets(onProgress) {
   const jobs = [];
   let loaded = 0;
@@ -350,16 +335,12 @@ async function preloadAllAssets(onProgress) {
 
   await Promise.all(jobs);
 }
-// Which alien tiers (0=easy, 1=normal, 2=hard) are allowed to appear right
-// now. Easy difficulty/early levels only ever see the easy ship; normal
-// unlocks easy+normal; hard unlocks all three at once.
 function alienTiersAvailable() {
   if (state.mode === 'infinity') {
     if (state.difficulty === 'easy') return [0];
     if (state.difficulty === 'normal') return [0, 1];
-    return [0, 1, 2]; // hard
+    return [0, 1, 2];
   }
-  // Levels mode: spread the same easy/normal/hard gating across the 8 planets.
   const n = state.currentLevel.level_number || 1;
   if (n <= 2) return [0];
   if (n <= 5) return [0, 1];
@@ -438,7 +419,7 @@ const DIFFICULTY_BASE = { easy: 0.7, normal: 1.0, hard: 1.4 };
 
 const state = {
   profile: null, levels: [],
-  mode: 'levels',            // 'levels' | 'infinity'
+  mode: 'levels',
   difficulty: 'normal',
   playerCount: 1,
   selectedChars: ['blue'],
@@ -459,12 +440,6 @@ function isPowerActive(player, type) {
 // ==========================================================
 // INIT
 // ==========================================================
-// ==========================================================
-// LOADING SCREEN (shown at boot while real assets load, and again as a
-// short transition just before a run starts). Progress always runs
-// 0% -> 78% while the tracked work is actually happening, then a fast
-// 78% -> 100% flourish once that work is done, before revealing the page.
-// ==========================================================
 const LoadingScreen = {
   el: null, fill: null, percentEl: null,
   init() {
@@ -479,8 +454,6 @@ const LoadingScreen = {
     this.fill.style.width = pct + '%';
     this.percentEl.textContent = pct + '%';
   },
-  // Drives 0->78% from a real (loaded, total) counter, then animates a quick
-  // 78->100% finish. Used at boot, where progress reflects actual downloads.
   async runWithRealProgress(loaderFn) {
     this.show();
     await loaderFn((loaded, total) => {
@@ -489,9 +462,6 @@ const LoadingScreen = {
     });
     await this._finish();
   },
-  // Same visual behavior, but for moments where there's nothing left to
-  // actually load (assets already cached from boot) - a short simulated
-  // 0->78->100 run purely for a consistent, polished transition.
   async runSimulated(totalMs = 700) {
     this.show();
     const rampMs = totalMs * 0.8;
@@ -517,7 +487,7 @@ const LoadingScreen = {
       };
       requestAnimationFrame(step);
     });
-    await new Promise(r => setTimeout(r, 150)); // brief hold at 100% before revealing
+    await new Promise(r => setTimeout(r, 150));
     this.hide();
   },
 };
@@ -568,7 +538,7 @@ function renderLevelSelect() {
 }
 
 // ==========================================================
-// INFINITY SETUP WIZARD: Difficulty -> Players -> Ship -> Confirm
+// INFINITY SETUP WIZARD
 // ==========================================================
 function startInfinityWizard() {
   state.difficulty = 'normal';
@@ -623,8 +593,6 @@ function renderWizardShipSelect() {
     </div>`;
   document.getElementById('wiz-ship-back').onclick = () => { Sound.click(); renderWizardPlayers(); };
   if (isTwoPlayer) {
-    // Both ships are already locked in (P1 = Blue, P2 = Purple) - either
-    // hotspot just continues, since choosing doesn't apply in 2-player mode.
     document.getElementById('wiz-ship-blue').onclick = () => { Sound.click(); renderWizardConfirm(); };
     document.getElementById('wiz-ship-purple').onclick = () => { Sound.click(); renderWizardConfirm(); };
   } else {
@@ -647,7 +615,7 @@ function renderWizardConfirm() {
 }
 
 // ==========================================================
-// RUN LIFECYCLE (shared by Levels + Infinity)
+// RUN LIFECYCLE
 // ==========================================================
 function buildPlayers(chars) {
   const count = chars.length;
@@ -695,7 +663,7 @@ async function startLevel(levelNumber) {
   state.selectedChars = [equippedChar];
   state.currentLevel = level;
 
-  showScreen('game'); // canvas needs real dimensions before resetRunState() sizes things off it
+  showScreen('game');
   resetRunState();
 
   HUD.pathBar.classList.remove('hidden');
@@ -703,7 +671,7 @@ async function startLevel(levelNumber) {
   HUD.levelLabel.textContent = `Level ${level.level_number}: ${level.name}`;
 
   showOverlay(null);
-  await LoadingScreen.runSimulated(); // renders on top (z-index) while the run is already set up underneath
+  await LoadingScreen.runSimulated();
   beginRunLoop();
 }
 
@@ -727,7 +695,7 @@ async function startInfinity() {
 function beginRunLoop() {
   state.running = true;
   state.lastFrame = performance.now();
-  Sound.stopMusic(); // background music plays before/after a run, not during
+  Sound.stopMusic();
   requestAnimationFrame(loop);
 }
 
@@ -766,7 +734,7 @@ function renderActivePowerBadges() {
 }
 
 // ==========================================================
-// DIFFICULTY (Infinity mode scales with score + chosen difficulty)
+// DIFFICULTY
 // ==========================================================
 function difficultyMultiplier() {
   if (state.mode !== 'infinity') return 1;
@@ -791,7 +759,7 @@ function maybeSpawn(dt, now) {
     const rockType = ASSET_PATHS.rocks[imgIndex];
     const img = Images.rocks[imgIndex];
     const aspect = img ? img.height / img.width : 1;
-    const w = 64 * rockType.sizeMul; // fixed size per type - no per-instance randomness
+    const w = 64 * rockType.sizeMul;
     const h = w * aspect;
     state.obstacles.push({
       x: Math.random() * (canvas.width - w), y: -h,
@@ -819,8 +787,7 @@ function maybeSpawn(dt, now) {
 }
 
 // ==========================================================
-// OBSTACLE SHATTER (Voronoi/Delaunay fracture on the sprite's own pixels,
-// adapted from a standalone destruction-fx prototype)
+// OBSTACLE SHATTER
 // ==========================================================
 const shatterMaskCache = new Map();
 function getShatterMask(img) {
@@ -837,7 +804,6 @@ function getShatterMask(img) {
 function shatterRock(o) {
   const img = Images.rocks[o.imgIndex];
   if (!img || typeof d3 === 'undefined' || !d3.Delaunay) { Sound.explosion(); return; }
-  const rockType = ASSET_PATHS.rocks[o.imgIndex];
   const pr = project(o);
   const dispH = pr.w * (img.height / img.width) * SPRITE_SQUASH;
   const scale = pr.w / img.width;
@@ -856,10 +822,10 @@ function shatterRock(o) {
     const x = Math.random() * mask.w, y = Math.random() * mask.h;
     if (alphaAt(x, y) > 25) points.push([x, y]);
   }
-  if (points.length < 4) return; // too sparse to fracture meaningfully
+  if (points.length < 4) return;
   const delaunay = d3.Delaunay.from(points);
   const voronoi = delaunay.voronoi([0, 0, mask.w, mask.h]);
-  const cx = mask.w / 2, cy = dispH > 0 ? mask.h / 2 : mask.h / 2;
+  const cx = mask.w / 2, cy = mask.h / 2;
 
   for (let i = 0; i < points.length; i++) {
     const polygon = voronoi.cellPolygon(i);
@@ -911,7 +877,7 @@ function updateShards(dt) {
     p.life++;
     p.x += p.vx * (dt / 16.67);
     p.y += p.vy * (dt / 16.67);
-    p.vy += 0.02 * (dt / 16.67); // gentle drift, not true gravity - stays arcade-y
+    p.vy += 0.02 * (dt / 16.67);
     p.rot += p.vrot * (dt / 16.67);
     if (p.life > p.fadeStart) { p.alpha -= 0.03; }
   });
@@ -966,9 +932,6 @@ function update(dt, now) {
   } else {
     state.score += (0.6 + leadShip.speed * 0.05) * (dt / 16.67) * difficultyMultiplier();
   }
-  // Background scroll speed: a gentle, steady base pace that only very slightly
-  // quickens as you progress (score in Infinity, distance in Levels) - intentionally
-  // decoupled from the difficulty multiplier so it never ramps up sharply.
   const progressRef = state.mode === 'infinity' ? state.score : state.distance;
   const bgSpeedFactor = 1 + Math.min(0.5, progressRef / 6000);
   state.bgOffset += 1.3 * bgSpeedFactor * (dt / 16.67);
@@ -1101,21 +1064,11 @@ function onPlayerHit(player, now) {
 }
 
 // ==========================================================
-// DRAW  (high-angle look via constant vertical squash + depth scale.
-// IMPORTANT: screen X always equals world X - no position-dependent
-// horizontal shifting. An earlier version compressed X toward center
-// based on each object's current height on screen, which meant anything
-// falling straight down (rocks, beams) visually drifted sideways every
-// frame purely because its Y changed - that was a bug, not an effect.
-// Now only two things vary with depth: overall SCALE (smaller = farther)
-// and nothing else horizontal ever moves an object that isn't actually
-// moving. The vertical SQUASH is a constant, position-independent factor
-// applied to every sprite's height, which is what actually reads as
-// "viewed from a high angle" without any risk of drift.
+// DRAW
 // ==========================================================
-const SPRITE_SQUASH = 0.8; // constant flatten factor (not dependent on position - no drift)
+const SPRITE_SQUASH = 0.8;
 function horizonT(y) { return Math.max(0, Math.min(1, y / canvas.height)); }
-function perspScale(t) { return 0.55 + 0.45 * t; } // far (top) smaller -> near (player row) = 1.0
+function perspScale(t) { return 0.55 + 0.45 * t; }
 function project(obj) {
   const cx = obj.x + obj.w / 2, cy = obj.y + obj.h / 2;
   const t = horizonT(cy);
@@ -1152,7 +1105,6 @@ function draw() {
 }
 
 function drawProjectedRect(obj, color) {
-  // Bullets travel in a perfectly straight line (no squash/no x-shift) so beams never look tilted.
   const pr = project(obj);
   ctx.fillStyle = color;
   ctx.fillRect(pr.cx - pr.w / 2, pr.cy - pr.h / 2, pr.w, pr.h);
@@ -1162,11 +1114,11 @@ function drawPlasmaBeam(b) {
   const img = Images.beams[b.char];
   if (!img) { drawProjectedRect(b, '#00e5ff'); return; }
   const pr = project(b);
-  const beamLen = pr.w * 3.2;                        // length along the travel direction
-  const beamThick = beamLen * (img.height / img.width); // thickness, keeping the source aspect ratio
+  const beamLen = pr.w * 3.2;
+  const beamThick = beamLen * (img.height / img.width);
   ctx.save();
   ctx.translate(pr.cx, pr.cy);
-  ctx.rotate(-Math.PI / 2); // source art's long axis is horizontal - rotate so it points up the screen
+  ctx.rotate(-Math.PI / 2);
   ctx.drawImage(img, -beamLen / 2, -beamThick / 2, beamLen, beamThick);
   ctx.restore();
 }
@@ -1202,13 +1154,13 @@ function drawAlien(a) {
   const img = Images.aliens[a.tier];
   if (!img) return;
   const pr = project(a);
-  const h = pr.h * SPRITE_SQUASH;
+  const size = a.tier === 0 ? 70 : a.tier === 1 ? 80 : a.tier === 2 ? 95 : 70;
   const damaged = a.hp < a.maxHp;
   ctx.save();
   if (damaged) ctx.globalAlpha = 0.55 + 0.45 * (a.hp / a.maxHp);
   ctx.translate(pr.cx, pr.cy);
   ctx.rotate((ALIEN_ROTATION_DEG * Math.PI) / 180);
-  ctx.drawImage(img, -pr.w / 2, -h / 2, pr.w, h);
+  ctx.drawImage(img, -size * pr.scale / 2, -size * pr.scale * SPRITE_SQUASH / 2, size * pr.scale, size * pr.scale * SPRITE_SQUASH);
   ctx.restore();
 }
 function drawShip(p) {
@@ -1228,8 +1180,6 @@ function drawShip(p) {
   ctx.restore();
 }
 
-
-
 // ==========================================================
 // MAIN LOOP + PAUSE
 // ==========================================================
@@ -1243,8 +1193,6 @@ function loop(now) {
     if (!state.running) return;
     draw();
   } catch (e) {
-    // A bug in one frame should never silently freeze the whole game -
-    // log it and keep the loop alive so play can continue.
     console.error('Frame error (game kept running):', e);
   }
   requestAnimationFrame(loop);
@@ -1297,7 +1245,7 @@ async function loseRun() {
 }
 
 // ==========================================================
-// SHIPYARD (Blue/Purple upgrade cards, paid for with Rupees)
+// SHIPYARD
 // ==========================================================
 function abilityRow(charId, ability, label) {
   const c = CHARACTERS[charId];
@@ -1376,7 +1324,6 @@ bindHold(document.getElementById('btn-right-p2'), () => p2() && (p2().keys.right
 bindHold(document.getElementById('btn-up-p2'), () => p2() && (p2().keys.up = true), () => p2() && (p2().keys.up = false));
 bindHold(document.getElementById('btn-down-p2'), () => p2() && (p2().keys.down = true), () => p2() && (p2().keys.down = false));
 
-// Player 1 = Arrow keys, Player 2 = WASD. Space always pauses/resumes.
 function toggleFullscreen() {
   const doc = document;
   const isFs = doc.fullscreenElement || doc.webkitFullscreenElement;
@@ -1422,7 +1369,6 @@ window.addEventListener('pointerdown', () => { Sound.ensureCtx(); Sound.startMus
 document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
 document.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => Sound.click()));
 
-// ---------- Toast (honest feedback for features not built yet) ----------
 let toastTimer = null;
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -1436,7 +1382,6 @@ function showToast(msg) {
   }, 1600);
 }
 
-// ---------- Title screen (real entry point) ----------
 document.getElementById('hotspot-play').addEventListener('click', () => { showScreen('home'); });
 document.getElementById('hotspot-settings').addEventListener('click', () => showOverlay('settings'));
 document.getElementById('hotspot-upgrade').addEventListener('click', () => { renderShop(); showOverlay('shop'); });
@@ -1447,7 +1392,6 @@ document.getElementById('hotspot-daily-missions').addEventListener('click', () =
 document.getElementById('hotspot-free-rewards').addEventListener('click', () => showToast('🎁 Free Rewards — coming soon!'));
 document.getElementById('hotspot-special-offer').addEventListener('click', () => showToast('✨ Special Offer — coming soon!'));
 
-// ---------- Home screen ----------
 document.getElementById('mode-levels').addEventListener('click', () => { renderLevelSelect(); showScreen('levelSelect'); });
 document.getElementById('mode-infinity').addEventListener('click', () => startInfinityWizard());
 document.getElementById('btn-level-select-back').addEventListener('click', () => showScreen('home'));
@@ -1456,10 +1400,7 @@ document.getElementById('btn-shop-home').addEventListener('click', () => { rende
 document.getElementById('btn-settings-levels').addEventListener('click', () => showOverlay('settings'));
 document.getElementById('btn-shop-levels').addEventListener('click', () => { renderShop(); showOverlay('shop'); });
 
-// ---------- In-game ----------
 document.getElementById('btn-pause-ingame').addEventListener('click', togglePause);
-
-// ---------- Pause overlay ----------
 document.getElementById('btn-pause-resume').addEventListener('click', togglePause);
 document.getElementById('btn-pause-back').addEventListener('click', togglePause);
 document.getElementById('btn-pause-home').addEventListener('click', () => { state.running = false; Sound.startMusic(); showOverlay(null); showScreen('title'); });
@@ -1468,21 +1409,16 @@ document.getElementById('btn-pause-restart').addEventListener('click', () => {
   if (state.mode === 'levels') startLevel(state.currentLevel.level_number); else startInfinity();
 });
 
-// ---------- Win / lose ----------
 document.getElementById('btn-next-level').addEventListener('click', () => startLevel((state.currentLevel.level_number || 0) + 1));
 document.getElementById('btn-win-shop').addEventListener('click', () => { renderShop(); showOverlay('shop'); });
 document.getElementById('btn-win-home').addEventListener('click', () => { showOverlay(null); showScreen('title'); });
 document.getElementById('btn-retry').addEventListener('click', () => { if (state.mode === 'levels') startLevel(state.currentLevel.level_number); else startInfinity(); });
 document.getElementById('btn-lose-home').addEventListener('click', () => { showOverlay(null); showScreen('title'); });
 
-// ---------- Settings ----------
 document.getElementById('toggle-music').addEventListener('change', e => Sound.setMusicOn(e.target.checked));
 document.getElementById('toggle-sound').addEventListener('change', e => Sound.setSoundOn(e.target.checked));
 document.getElementById('volume-slider').addEventListener('input', e => Sound.setVolume(e.target.value / 100));
 document.getElementById('btn-close-settings').addEventListener('click', () => showOverlay(null));
-
-// ---------- Shipyard ----------
 document.getElementById('btn-close-shop').addEventListener('click', () => showOverlay(null));
 
-// ---------- Boot ----------
 init();
