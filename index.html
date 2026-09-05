@@ -75,8 +75,29 @@
       </div>
       <div id="active-powers"></div>
       <canvas id="game-canvas"></canvas>
+
+      <!-- Movement is keyboard-only for this testing layout. The old D-pads remain in the DOM so existing input code stays safe, but are hidden by CSS. -->
       <div id="dpad-p2" class="hidden"><button id="btn-up-p2" class="ctrl-btn">▲</button><div id="dpad-mid-p2" class="dpad-mid"><button id="btn-left-p2" class="ctrl-btn">◀</button><button id="btn-down-p2" class="ctrl-btn">▼</button><button id="btn-right-p2" class="ctrl-btn">▶</button></div></div>
       <div id="dpad"><button id="btn-up" class="ctrl-btn">▲</button><div id="dpad-mid" class="dpad-mid"><button id="btn-left" class="ctrl-btn">◀</button><button id="btn-down" class="ctrl-btn">▼</button><button id="btn-right" class="ctrl-btn">▶</button></div></div>
+
+      <!-- Temporary visual placement only. Power behavior will be added later after testing. -->
+      <div id="power-buttons-p1" class="power-button-cluster p1-power-cluster" aria-label="Player 1 power buttons">
+        <button class="power-button power-button-1" type="button" aria-label="Player 1 power 1"><span>1</span></button>
+        <button class="power-button power-button-2" type="button" aria-label="Player 1 power 2"><span>2</span></button>
+        <button class="power-button power-button-3" type="button" aria-label="Player 1 power 3"><span>3</span></button>
+        <button class="power-button power-button-4" type="button" aria-label="Player 1 power 4"><span>4</span></button>
+        <button class="power-button power-button-5" type="button" aria-label="Player 1 power 5"><span>5</span></button>
+        <button class="power-button power-button-6" type="button" aria-label="Player 1 power 6"><span>6</span></button>
+      </div>
+
+      <div id="power-buttons-p2" class="power-button-cluster p2-power-cluster" aria-label="Player 2 power buttons">
+        <button class="power-button power-button-1" type="button" aria-label="Player 2 power 1"><span>1</span></button>
+        <button class="power-button power-button-2" type="button" aria-label="Player 2 power 2"><span>2</span></button>
+        <button class="power-button power-button-3" type="button" aria-label="Player 2 power 3"><span>3</span></button>
+        <button class="power-button power-button-4" type="button" aria-label="Player 2 power 4"><span>4</span></button>
+        <button class="power-button power-button-5" type="button" aria-label="Player 2 power 5"><span>5</span></button>
+        <button class="power-button power-button-6" type="button" aria-label="Player 2 power 6"><span>6</span></button>
+      </div>
     </div>
 
     <div id="overlay-infinity-setup" class="overlay hidden"><div id="infinity-setup-content"></div></div>
