@@ -1,6 +1,6 @@
 /* Beyond Infinity: Soloverse - Planet Science Cards
  * Level 1: Moon | Level 2: Mars
- * Shows once per page session before the mission starts.
+ * Shows every time before the mission starts.
  * Infinity Mode is intentionally untouched.
  */
 (function () {
@@ -34,15 +34,8 @@
       return;
     }
 
-    const storageKey = 'soloverse_science_seen_level_' + levelId;
-    try {
-      if (sessionStorage.getItem(storageKey) === '1') {
-        continueGame();
-        return;
-      }
-      sessionStorage.setItem(storageKey, '1');
-    } catch (_) {}
-
+    // Intentionally no sessionStorage/localStorage check:
+    // the science card must appear every time the level is played.
     const old = document.getElementById('soloverse-science-card');
     if (old) old.remove();
 
