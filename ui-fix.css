@@ -60,16 +60,16 @@
 /*
    Reference-matched six-button HUD.
    P1 is bottom-left and P2 is bottom-right, exactly as in the supplied reference.
-   Button 1 is the large outer button. Buttons 2-6 form the same compact constellation
-   around it, with P2 mirrored horizontally.
+   Button 1 is the large outer/lower button. Buttons 2-6 form the same constellation
+   around it, with a small intentional gap between neighboring buttons.
 */
 .power-button-cluster {
   position: absolute !important;
   left: auto !important;
   right: auto !important;
   bottom: 10px !important;
-  width: clamp(250px, 27vw, 400px) !important;
-  height: clamp(320px, 58vh, 500px) !important;
+  width: clamp(270px, 29vw, 420px) !important;
+  height: clamp(335px, 60vh, 515px) !important;
   z-index: 1020 !important;
   pointer-events: auto !important;
 }
@@ -80,8 +80,8 @@
 
 .power-button {
   position: absolute !important;
-  width: clamp(52px, 5.4vw, 72px) !important;
-  height: clamp(52px, 5.4vw, 72px) !important;
+  width: clamp(50px, 5.2vw, 70px) !important;
+  height: clamp(50px, 5.2vw, 70px) !important;
   padding: 0 !important;
   margin: 0 !important;
   border-radius: 50% !important;
@@ -107,25 +107,21 @@
   z-index: 3 !important;
 }
 
-/*
-   P1 reference coordinates (normalized to the control cluster):
-   6 = upper special, 5 = upper-left small, 3 = upper-right small,
-   4 = middle-right small, 2 = lower-right small, 1 = large bottom anchor.
-*/
-.p1-power-cluster .power-button-6 { left: 25%; top: 6.2%; }
-.p1-power-cluster .power-button-5 { left: 23.75%; top: 35.2%; }
-.p1-power-cluster .power-button-3 { left: 62.5%; top: 35.2%; }
-.p1-power-cluster .power-button-4 { left: 86.25%; top: 55.2%; }
-.p1-power-cluster .power-button-2 { left: 83.75%; top: 83.2%; }
-.p1-power-cluster .power-button-1 { left: 38.75%; top: 76.2%; }
+/* P1: same reference constellation, opened slightly so buttons don't touch. */
+.p1-power-cluster .power-button-6 { left: 23%; top: 5.5%; }
+.p1-power-cluster .power-button-5 { left: 20%; top: 34%; }
+.p1-power-cluster .power-button-3 { left: 64%; top: 34%; }
+.p1-power-cluster .power-button-4 { left: 90%; top: 55%; }
+.p1-power-cluster .power-button-2 { left: 87%; top: 84%; }
+.p1-power-cluster .power-button-1 { left: 38%; top: 78%; }
 
-/* P2 is a true horizontal mirror of the P1 constellation. */
-.p2-power-cluster .power-button-6 { left: 75%; top: 6.2%; }
-.p2-power-cluster .power-button-5 { left: 76.25%; top: 35.2%; }
-.p2-power-cluster .power-button-3 { left: 37.5%; top: 35.2%; }
-.p2-power-cluster .power-button-4 { left: 13.75%; top: 55.2%; }
-.p2-power-cluster .power-button-2 { left: 16.25%; top: 83.2%; }
-.p2-power-cluster .power-button-1 { left: 61.25%; top: 76.2%; }
+/* P2: true horizontal mirror of P1. */
+.p2-power-cluster .power-button-6 { left: 77%; top: 5.5%; }
+.p2-power-cluster .power-button-5 { left: 80%; top: 34%; }
+.p2-power-cluster .power-button-3 { left: 36%; top: 34%; }
+.p2-power-cluster .power-button-4 { left: 10%; top: 55%; }
+.p2-power-cluster .power-button-2 { left: 13%; top: 84%; }
+.p2-power-cluster .power-button-1 { left: 62%; top: 78%; }
 
 .power-button:active { transform: translate(-50%, -50%) scale(0.94) !important; }
 
@@ -147,8 +143,8 @@ button.title-hotspot {
 
 @media (max-width: 700px) {
   .power-button-cluster {
-    width: 230px !important;
-    height: 310px !important;
+    width: 245px !important;
+    height: 320px !important;
     bottom: 8px !important;
   }
   .power-button {
@@ -163,8 +159,8 @@ button.title-hotspot {
 
 @media (max-width: 480px) {
   .power-button-cluster {
-    width: 190px !important;
-    height: 255px !important;
+    width: 205px !important;
+    height: 265px !important;
     bottom: 6px !important;
   }
   .power-button {
