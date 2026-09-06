@@ -1,27 +1,35 @@
-// Show Player 2 power buttons only when a second active player exists.
-// Single-player games keep the Player 2 cluster completely hidden.
+// Show Player 2 power buttons only when the game's existing Player 2 HUD is active.
+// This follows the game's own two-player state instead of guessing from state.players.
 (function () {
   const P2_SELECTOR = '#power-buttons-p2';
+  const P2_HULL_SELECTOR = '#hull-bar-p2';
 
   function syncPlayer2Buttons() {
-    const el = document.querySelector(P2_SELECTOR);
-    if (!el) return;
+    const buttons = document.querySelector(P2_SELECTOR);
+    const p2Hull = document.querySelector(P2_HULL_SELECTOR);
+    if (!buttons) return;
 
-    let showP2 = false;
-    try {
-      // The game engine keeps the active players in the global state object.
-      showP2 = Array.isArray(state?.players) && state.players.length > 1;
-    } catch (_) {
-      showP2 = false;
-    }
+    // game.js already adds/removes the "hidden" class on this element when
+    // Player 2 is active. Use that same source of truth for the power buttons.
+    const showP2 = !!p2Hull && !p2Hull.classList.contains('hidden');
 
-    el.hidden = !showP2;
-    el.setAttribute('aria-hidden', showP2 ? 'false' : 'true');
+    buttons.hidden = !showP2;
+    buttons.style.display = showP2 ? '' : 'none';
+    buttons.setAttribute('aria-hidden', showP2 ? 'false' : 'true');
   }
 
   function startSync() {
     syncPlayer2Buttons();
-    // The player/mode state can change when a run starts, so re-check cheaply.
+
+    const p2Hull = document.querySelector(P2_HULL_SELECTOR);
+    if (p2Hull) {
+      new MutationObserver(syncPlayer2Buttons).observe(p2Hull, {
+        attributes: true,
+        attributeFilter: ['class']
+      });
+    }
+
+    // Also do a lightweight periodic check for mode/run transitions.
     setInterval(syncPlayer2Buttons, 250);
   }
 
