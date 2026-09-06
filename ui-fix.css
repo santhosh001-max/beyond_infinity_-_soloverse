@@ -43,34 +43,42 @@
 /* Keyboard-only movement: hide the old on-screen D-pads without removing their DOM elements. */
 #dpad, #dpad-p2 { display: none !important; }
 
-/*
-   Compact six-button power layout.
-   Arrangement, clockwise from the main attack button:
-   - Attack: bottom outer corner
-   - Heal: bottom inner
-   - Shield: above Heal
-   - Boost: above Shield
-   - Multi shooting: above Boost
-   - Special move: above Multi shooting
+/* Smaller HUD health area so it does not compete with the game controls. */
+#hull-bars {
+  width: clamp(145px, 19vw, 210px) !important;
+  max-width: 210px !important;
+  gap: 4px !important;
+}
+#hull-bar,
+#hull-bar-p2 {
+  min-width: 0 !important;
+  height: 12px !important;
+  padding: 1px 3px !important;
+  font-size: clamp(8px, 1.15vw, 11px) !important;
+}
 
-   P1 is on the right and faces inward; P2 is mirrored on the left.
+/*
+   Compact six-button fan based on the uploaded reference.
+   Button 1 is the larger main button at the outside bottom corner.
+   Buttons 2-6 stay close to it instead of forming a tall vertical column.
+   P1 is on the right; P2 is mirrored on the left.
 */
 .power-button-cluster {
   position: absolute !important;
-  bottom: clamp(12px, 2.8vh, 28px) !important;
-  width: clamp(205px, 24vw, 290px) !important;
-  height: clamp(285px, 36vw, 360px) !important;
+  bottom: clamp(12px, 2.5vh, 24px) !important;
+  width: clamp(190px, 22vw, 245px) !important;
+  height: clamp(175px, 24vw, 215px) !important;
   z-index: 1020 !important;
   pointer-events: auto !important;
 }
 
-.p1-power-cluster { right: clamp(10px, 2vw, 28px) !important; }
-.p2-power-cluster { left: clamp(10px, 2vw, 28px) !important; }
+.p1-power-cluster { right: clamp(10px, 2vw, 26px) !important; }
+.p2-power-cluster { left: clamp(10px, 2vw, 26px) !important; }
 
 .power-button {
   position: absolute !important;
-  width: clamp(52px, 6vw, 70px) !important;
-  height: clamp(52px, 6vw, 70px) !important;
+  width: clamp(44px, 5vw, 56px) !important;
+  height: clamp(44px, 5vw, 56px) !important;
   padding: 0 !important;
   margin: 0 !important;
   border-radius: 50% !important;
@@ -79,7 +87,7 @@
   box-shadow: 0 5px 14px rgba(0,0,0,0.42), inset 0 0 10px rgba(255,255,255,0.12) !important;
   color: #fff !important;
   font-weight: 800 !important;
-  font-size: clamp(14px, 1.8vw, 20px) !important;
+  font-size: clamp(12px, 1.5vw, 17px) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -87,25 +95,31 @@
   -webkit-tap-highlight-color: transparent !important;
 }
 
-/* P1: attack in the bottom-right corner; the other five rise upward around it. */
-.p1-power-cluster .power-button-1 { right: 0; bottom: 0; }
-.p1-power-cluster .power-button-2 { left: 4%; bottom: 1%; }
-.p1-power-cluster .power-button-3 { left: 2%; bottom: 23%; }
-.p1-power-cluster .power-button-4 { left: 10%; bottom: 45%; }
-.p1-power-cluster .power-button-5 { left: 23%; bottom: 67%; }
-.p1-power-cluster .power-button-6 { left: 50%; top: 0; transform: translateX(-50%); }
+/* Main button 1 is deliberately larger. */
+.power-button-1 {
+  width: clamp(62px, 6.6vw, 76px) !important;
+  height: clamp(62px, 6.6vw, 76px) !important;
+  font-size: clamp(15px, 1.8vw, 20px) !important;
+  z-index: 3 !important;
+}
 
-/* P2: mirrored version, with attack in the bottom-left corner. */
+/* P1: compact clockwise fan around the large bottom-right button. */
+.p1-power-cluster .power-button-1 { right: 0; bottom: 0; }
+.p1-power-cluster .power-button-2 { right: 29%; bottom: 2%; }
+.p1-power-cluster .power-button-3 { right: 45%; bottom: 23%; }
+.p1-power-cluster .power-button-4 { right: 38%; bottom: 47%; }
+.p1-power-cluster .power-button-5 { right: 17%; bottom: 60%; }
+.p1-power-cluster .power-button-6 { right: 0; bottom: 43%; }
+
+/* P2: exact mirror of P1, with the large button in the bottom-left. */
 .p2-power-cluster .power-button-1 { left: 0; bottom: 0; }
-.p2-power-cluster .power-button-2 { right: 4%; bottom: 1%; }
-.p2-power-cluster .power-button-3 { right: 2%; bottom: 23%; }
-.p2-power-cluster .power-button-4 { right: 10%; bottom: 45%; }
-.p2-power-cluster .power-button-5 { right: 23%; bottom: 67%; }
-.p2-power-cluster .power-button-6 { right: 50%; left: auto; top: 0; transform: translateX(50%); }
+.p2-power-cluster .power-button-2 { left: 29%; bottom: 2%; }
+.p2-power-cluster .power-button-3 { left: 45%; bottom: 23%; }
+.p2-power-cluster .power-button-4 { left: 38%; bottom: 47%; }
+.p2-power-cluster .power-button-5 { left: 17%; bottom: 60%; }
+.p2-power-cluster .power-button-6 { left: 0; bottom: 43%; }
 
 .power-button:active { transform: scale(0.94); }
-.p1-power-cluster .power-button-6:active { transform: translateX(-50%) scale(0.94); }
-.p2-power-cluster .power-button-6:active { transform: translateX(50%) scale(0.94); }
 
 /* Hide the numeric placeholders once real artwork is attached later. */
 .power-button span { display: block; }
@@ -125,23 +139,31 @@ button.title-hotspot {
 
 @media (max-width: 700px) {
   .power-button-cluster {
-    width: 195px !important;
-    height: 270px !important;
-    bottom: 12px !important;
+    width: 185px !important;
+    height: 170px !important;
+    bottom: 10px !important;
   }
   .power-button {
-    width: 54px !important;
-    height: 54px !important;
+    width: 43px !important;
+    height: 43px !important;
+  }
+  .power-button-1 {
+    width: 62px !important;
+    height: 62px !important;
   }
 }
 
 @media (max-width: 480px) {
   .power-button-cluster {
-    width: 175px !important;
-    height: 245px !important;
+    width: 170px !important;
+    height: 155px !important;
   }
   .power-button {
-    width: 48px !important;
-    height: 48px !important;
+    width: 39px !important;
+    height: 39px !important;
+  }
+  .power-button-1 {
+    width: 56px !important;
+    height: 56px !important;
   }
 }
