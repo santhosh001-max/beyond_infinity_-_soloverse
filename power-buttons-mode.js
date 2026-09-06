@@ -1,36 +1,78 @@
-// Show Player 2 power buttons only when the game's existing Player 2 HUD is active.
-// This follows the game's own two-player state instead of guessing from state.players.
+// Keep power buttons completely hidden during loading and outside active gameplay.
+// Player 2 is shown only when the game's existing Player 2 HUD is active.
 (function () {
+  const P1_SELECTOR = '#power-buttons-p1';
   const P2_SELECTOR = '#power-buttons-p2';
   const P2_HULL_SELECTOR = '#hull-bar-p2';
+  const LOADING_SELECTOR = '#loading-screen';
+  const GAME_UI_SELECTOR = '#game-ui';
 
-  function syncPlayer2Buttons() {
-    const buttons = document.querySelector(P2_SELECTOR);
+  function isLoading() {
+    const loading = document.querySelector(LOADING_SELECTOR);
+    return !!loading && !loading.classList.contains('hidden');
+  }
+
+  function isGameUIActive() {
+    const gameUI = document.querySelector(GAME_UI_SELECTOR);
+    return !!gameUI && !gameUI.classList.contains('hidden');
+  }
+
+  function forceHidden(element) {
+    if (!element) return;
+    element.hidden = true;
+    element.style.setProperty('display', 'none', 'important');
+    element.setAttribute('aria-hidden', 'true');
+  }
+
+  function show(element) {
+    if (!element) return;
+    element.hidden = false;
+    element.style.removeProperty('display');
+    element.setAttribute('aria-hidden', 'false');
+  }
+
+  function syncPowerButtons() {
+    const p1 = document.querySelector(P1_SELECTOR);
+    const p2 = document.querySelector(P2_SELECTOR);
     const p2Hull = document.querySelector(P2_HULL_SELECTOR);
-    if (!buttons) return;
 
-    // game.js already adds/removes the "hidden" class on this element when
-    // Player 2 is active. Use that same source of truth for the power buttons.
+    // Never show any power buttons during the loading screen or before gameplay.
+    if (isLoading() || !isGameUIActive()) {
+      forceHidden(p1);
+      forceHidden(p2);
+      return;
+    }
+
+    // Player 1 is available in active gameplay.
+    show(p1);
+
+    // Player 2 follows the game's own HUD state.
     const showP2 = !!p2Hull && !p2Hull.classList.contains('hidden');
-
-    buttons.hidden = !showP2;
-    buttons.style.display = showP2 ? '' : 'none';
-    buttons.setAttribute('aria-hidden', showP2 ? 'false' : 'true');
+    if (showP2) {
+      show(p2);
+    } else {
+      forceHidden(p2);
+    }
   }
 
   function startSync() {
-    syncPlayer2Buttons();
+    syncPowerButtons();
 
+    const loading = document.querySelector(LOADING_SELECTOR);
+    const gameUI = document.querySelector(GAME_UI_SELECTOR);
     const p2Hull = document.querySelector(P2_HULL_SELECTOR);
-    if (p2Hull) {
-      new MutationObserver(syncPlayer2Buttons).observe(p2Hull, {
+
+    // Watch the same class changes used by the game's screen/loading system.
+    [loading, gameUI, p2Hull].forEach((element) => {
+      if (!element) return;
+      new MutationObserver(syncPowerButtons).observe(element, {
         attributes: true,
         attributeFilter: ['class']
       });
-    }
+    });
 
-    // Also do a lightweight periodic check for mode/run transitions.
-    setInterval(syncPlayer2Buttons, 250);
+    // Lightweight safety check for transitions between screens/runs.
+    setInterval(syncPowerButtons, 100);
   }
 
   if (document.readyState === 'loading') {
