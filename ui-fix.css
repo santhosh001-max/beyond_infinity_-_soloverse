@@ -1,174 +1,22 @@
-/* ui-fix.css
-   Overrides to ensure the interactive UI sits above the canvas and buttons are visible/clickable.
-*/
+/* ui-fix.css - HUD and interaction overrides */
+#game-container{position:relative!important;z-index:0}#game-canvas{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:0!important;pointer-events:auto!important}
+.top-right-buttons,#hud,#path-bar,#score-bar,#toast,#dpad,#dpad-p2,.overlay,#loading-screen,#title-screen,#home-screen,#level-select,#game-ui{z-index:1000!important;pointer-events:auto!important}
+.icon-btn,.ctrl-btn,.frame-hotspot,.title-hotspot,#btn-fullscreen,#btn-pause-ingame,.back-btn,#btn-retry,#btn-lose-home,#btn-next-level,#btn-win-shop,#btn-win-home{pointer-events:auto!important;z-index:1010!important;-webkit-tap-highlight-color:transparent}
+.frame-hotspot,.title-hotspot{-webkit-appearance:none!important;appearance:none!important;background:transparent!important;border:none!important;box-shadow:none!important;outline:none!important;cursor:pointer!important;display:block!important;padding:0!important}.frame-hotspot:focus,.title-hotspot:focus{outline:none!important}.icon-btn,.ctrl-btn{background:rgba(255,255,255,.06)!important;border:1px solid rgba(255,255,255,.12)!important;color:#e6f1ff!important}
+#dpad,#dpad-p2{display:none!important}
+#hull-bars{width:clamp(125px,16vw,180px)!important;max-width:180px!important;gap:3px!important}#hull-bar,#hull-bar-p2{min-width:0!important;height:10px!important;padding:1px 2px!important;font-size:clamp(7px,1vw,10px)!important}
 
-#game-container { position: relative !important; z-index: 0; }
-#game-canvas { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; z-index: 0 !important; pointer-events: auto !important; }
+/* Spacious reference-matched six-button HUD. The controls are deliberately spread out so neighboring circles do not touch. */
+.power-button-cluster{position:absolute!important;left:auto!important;right:auto!important;bottom:10px!important;width:clamp(300px,31vw,440px)!important;height:clamp(350px,62vh,530px)!important;z-index:1020!important;pointer-events:auto!important}
+.p1-power-cluster{left:clamp(8px,1.3vw,20px)!important}.p2-power-cluster{right:clamp(8px,1.3vw,20px)!important}
+.power-button{position:absolute!important;width:clamp(52px,5.1vw,68px)!important;height:clamp(52px,5.1vw,68px)!important;padding:0!important;margin:0!important;border-radius:50%!important;border:2px solid rgba(255,255,255,.55)!important;background:rgba(10,18,42,.82)!important;box-shadow:0 5px 14px rgba(0,0,0,.42),inset 0 0 10px rgba(255,255,255,.12)!important;color:#fff!important;font-weight:800!important;font-size:clamp(11px,1.4vw,16px)!important;display:flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;-webkit-tap-highlight-color:transparent!important;transform:translate(-50%,-50%)!important}
+.power-button-1{width:clamp(96px,10.5vw,136px)!important;height:clamp(96px,10.5vw,136px)!important;font-size:clamp(15px,1.8vw,21px)!important;z-index:3!important}
 
-.top-right-buttons,
-#hud,
-#path-bar,
-#score-bar,
-#toast,
-#dpad,
-#dpad-p2,
-.overlay,
-#loading-screen,
-#title-screen,
-#home-screen,
-#level-select,
-#game-ui { z-index: 1000 !important; pointer-events: auto !important; }
-
-.icon-btn,
-.ctrl-btn,
-.frame-hotspot,
-.title-hotspot,
-#btn-fullscreen,
-#btn-pause-ingame,
-.back-btn,
-#btn-retry,
-#btn-lose-home,
-#btn-next-level,
-#btn-win-shop,
-#btn-win-home { pointer-events: auto !important; z-index: 1010 !important; -webkit-tap-highlight-color: transparent; }
-
-.frame-hotspot, .title-hotspot {
-  -webkit-appearance: none !important; appearance: none !important;
-  background: transparent !important; border: none !important; box-shadow: none !important;
-  outline: none !important; cursor: pointer !important; display: block !important; padding: 0 !important;
-}
-.frame-hotspot:focus, .title-hotspot:focus { outline: none !important; }
-.icon-btn, .ctrl-btn { background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.12) !important; color: #e6f1ff !important; }
-
-/* Keyboard-only movement: hide the old on-screen D-pads without removing their DOM elements. */
-#dpad, #dpad-p2 { display: none !important; }
-
-/* Smaller HUD health area so it does not compete with the game controls. */
-#hull-bars {
-  width: clamp(125px, 16vw, 180px) !important;
-  max-width: 180px !important;
-  gap: 3px !important;
-}
-#hull-bar,
-#hull-bar-p2 {
-  min-width: 0 !important;
-  height: 10px !important;
-  padding: 1px 2px !important;
-  font-size: clamp(7px, 1vw, 10px) !important;
-}
-
-/*
-   Reference-matched six-button HUD.
-   P1 is bottom-left and P2 is bottom-right, exactly as in the supplied reference.
-   Button 1 is the large outer/lower button. Buttons 2-6 form the same constellation
-   around it, with a small intentional gap between neighboring buttons.
-*/
-.power-button-cluster {
-  position: absolute !important;
-  left: auto !important;
-  right: auto !important;
-  bottom: 10px !important;
-  width: clamp(270px, 29vw, 420px) !important;
-  height: clamp(335px, 60vh, 515px) !important;
-  z-index: 1020 !important;
-  pointer-events: auto !important;
-}
-
-/* The reference places Player 1 controls on the left and Player 2 controls on the right. */
-.p1-power-cluster { left: clamp(8px, 1.3vw, 20px) !important; }
-.p2-power-cluster { right: clamp(8px, 1.3vw, 20px) !important; }
-
-.power-button {
-  position: absolute !important;
-  width: clamp(50px, 5.2vw, 70px) !important;
-  height: clamp(50px, 5.2vw, 70px) !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border-radius: 50% !important;
-  border: 2px solid rgba(255,255,255,0.55) !important;
-  background: rgba(10,18,42,0.82) !important;
-  box-shadow: 0 5px 14px rgba(0,0,0,0.42), inset 0 0 10px rgba(255,255,255,0.12) !important;
-  color: #fff !important;
-  font-weight: 800 !important;
-  font-size: clamp(11px, 1.4vw, 16px) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-  -webkit-tap-highlight-color: transparent !important;
-  transform: translate(-50%, -50%) !important;
-}
-
-/* Button 1 is intentionally much larger, matching the dominant lower corner button. */
-.power-button-1 {
-  width: clamp(92px, 11vw, 140px) !important;
-  height: clamp(92px, 11vw, 140px) !important;
-  font-size: clamp(15px, 1.8vw, 21px) !important;
-  z-index: 3 !important;
-}
-
-/* P1: same reference constellation, opened slightly so buttons don't touch. */
-.p1-power-cluster .power-button-6 { left: 23%; top: 5.5%; }
-.p1-power-cluster .power-button-5 { left: 20%; top: 34%; }
-.p1-power-cluster .power-button-3 { left: 64%; top: 34%; }
-.p1-power-cluster .power-button-4 { left: 90%; top: 55%; }
-.p1-power-cluster .power-button-2 { left: 87%; top: 84%; }
-.p1-power-cluster .power-button-1 { left: 38%; top: 78%; }
-
-/* P2: true horizontal mirror of P1. */
-.p2-power-cluster .power-button-6 { left: 77%; top: 5.5%; }
-.p2-power-cluster .power-button-5 { left: 80%; top: 34%; }
-.p2-power-cluster .power-button-3 { left: 36%; top: 34%; }
-.p2-power-cluster .power-button-4 { left: 10%; top: 55%; }
-.p2-power-cluster .power-button-2 { left: 13%; top: 84%; }
-.p2-power-cluster .power-button-1 { left: 62%; top: 78%; }
-
-.power-button:active { transform: translate(-50%, -50%) scale(0.94) !important; }
-
-/* Keep numeric placeholders until the real button artwork is attached. */
-.power-button span { display: block; }
-
-.overlay.hidden .frame-hotspot,
-.screen.hidden .frame-photo-wrap .frame-hotspot,
-.title-frame .title-hotspot.hidden { display: none !important; }
-
-.frame-photo-wrap img { position: relative !important; z-index: 0 !important; }
-.frame-photo-wrap .frame-hotspot { position: absolute !important; z-index: 2 !important; background: transparent !important; pointer-events: auto !important; }
-
-button.frame-hotspot,
-button.title-hotspot {
-  background: transparent !important; background-color: transparent !important; background-image: none !important;
-  border: none !important; box-shadow: none !important; outline: none !important; color: transparent !important; opacity: 1 !important;
-}
-
-@media (max-width: 700px) {
-  .power-button-cluster {
-    width: 245px !important;
-    height: 320px !important;
-    bottom: 8px !important;
-  }
-  .power-button {
-    width: 42px !important;
-    height: 42px !important;
-  }
-  .power-button-1 {
-    width: 76px !important;
-    height: 76px !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .power-button-cluster {
-    width: 205px !important;
-    height: 265px !important;
-    bottom: 6px !important;
-  }
-  .power-button {
-    width: 36px !important;
-    height: 36px !important;
-  }
-  .power-button-1 {
-    width: 64px !important;
-    height: 64px !important;
-  }
-}
+/* P1: noticeably separated positions. */
+.p1-power-cluster .power-button-6{left:23%!important;top:5%!important}.p1-power-cluster .power-button-5{left:11%!important;top:34%!important}.p1-power-cluster .power-button-3{left:68%!important;top:34%!important}.p1-power-cluster .power-button-4{left:93%!important;top:56%!important}.p1-power-cluster .power-button-2{left:87%!important;top:88%!important}.p1-power-cluster .power-button-1{left:37%!important;top:79%!important}
+/* P2: exact horizontal mirror. */
+.p2-power-cluster .power-button-6{left:77%!important;top:5%!important}.p2-power-cluster .power-button-5{left:89%!important;top:34%!important}.p2-power-cluster .power-button-3{left:32%!important;top:34%!important}.p2-power-cluster .power-button-4{left:7%!important;top:56%!important}.p2-power-cluster .power-button-2{left:13%!important;top:88%!important}.p2-power-cluster .power-button-1{left:63%!important;top:79%!important}
+.power-button:active{transform:translate(-50%,-50%) scale(.94)!important}.power-button span{display:block}
+.overlay.hidden .frame-hotspot,.screen.hidden .frame-photo-wrap .frame-hotspot,.title-frame .title-hotspot.hidden{display:none!important}.frame-photo-wrap img{position:relative!important;z-index:0!important}.frame-photo-wrap .frame-hotspot{position:absolute!important;z-index:2!important;background:transparent!important;pointer-events:auto!important}button.frame-hotspot,button.title-hotspot{background:transparent!important;background-color:transparent!important;background-image:none!important;border:none!important;box-shadow:none!important;outline:none!important;color:transparent!important;opacity:1!important}
+@media(max-width:700px){.power-button-cluster{width:260px!important;height:325px!important;bottom:8px!important}.power-button{width:42px!important;height:42px!important}.power-button-1{width:78px!important;height:78px!important}.p1-power-cluster .power-button-6{left:22%!important}.p1-power-cluster .power-button-5{left:8%!important}.p1-power-cluster .power-button-3{left:70%!important}.p1-power-cluster .power-button-4{left:94%!important}.p1-power-cluster .power-button-2{left:88%!important}.p1-power-cluster .power-button-1{left:36%!important}.p2-power-cluster .power-button-6{left:78%!important}.p2-power-cluster .power-button-5{left:92%!important}.p2-power-cluster .power-button-3{left:30%!important}.p2-power-cluster .power-button-4{left:6%!important}.p2-power-cluster .power-button-2{left:12%!important}.p2-power-cluster .power-button-1{left:64%!important}}
+@media(max-width:480px){.power-button-cluster{width:220px!important;height:270px!important;bottom:6px!important}.power-button{width:36px!important;height:36px!important}.power-button-1{width:64px!important;height:64px!important}.p1-power-cluster .power-button-5{left:6%!important}.p1-power-cluster .power-button-3{left:72%!important}.p2-power-cluster .power-button-5{left:94%!important}.p2-power-cluster .power-button-3{left:28%!important}}
