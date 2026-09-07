@@ -20,16 +20,9 @@
   function getProgress(){
     const saved=read(),chars=getCharacters();
     let upgrades=0;
-    Object.values(chars).forEach(c=>{
-      upgrades+=Number(c.healthLv||0)+Number(c.speedLv||0)+Math.max(0,Number(c.level||1)-1);
-    });
+    Object.values(chars).forEach(c=>{upgrades+=Number(c.healthLv||0)+Number(c.speedLv||0)+Math.max(0,Number(c.level||1)-1)});
     const profile=getProfile();
-    return {
-      upgrades,
-      score:Number(profile.bestScore||profile.best_score||0),
-      survival:Number(saved.survival||0),
-      treasure:Number(saved.treasure||0)
-    };
+    return {upgrades,score:Math.max(Number(profile.bestScore||profile.best_score||0),Number(saved.bestScore||0)),survival:Number(saved.survival||0),treasure:Number(saved.treasure||0)};
   }
   function value(def,progress){return Number(progress[def.kind]||0)}
   function tierFor(def,v){if(v>=def.gold)return 'gold';if(v>=def.silver)return 'silver';if(v>=def.bronze)return 'bronze';return 'locked'}
@@ -57,8 +50,7 @@
     if(!el){el=document.createElement('div');el.id='overlay-achievements';el.className='overlay achievements-overlay hidden';el.innerHTML='<div class="achievements-panel"><button id="btn-achievements-close" class="achievement-close">✕</button><h1>🏆 ACHIEVEMENTS</h1><p class="achievement-subtitle">Build your legacy beyond infinity</p><div id="achievement-grid"></div><div id="achievement-total"></div></div>';document.getElementById('game-container').appendChild(el);el.querySelector('#btn-achievements-close').onclick=close}
     const progress=getProgress();el.querySelector('#achievement-grid').innerHTML=defs.map(def=>card(def,progress)).join('');
     const unlocked=defs.filter(def=>tierFor(def,value(def,progress))!=='locked').length,gold=defs.filter(def=>tierFor(def,value(def,progress))==='gold').length;
-    el.querySelector('#achievement-total').textContent=`Unlocked: ${unlocked}/${defs.length} • Gold: ${gold}/${defs.length} • ${Math.round(unlocked/defs.length*100)}% complete`;
-    el.classList.remove('hidden');
+    el.querySelector('#achievement-total').textContent=`Unlocked: ${unlocked}/${defs.length} • Gold: ${gold}/${defs.length} • ${Math.round(unlocked/defs.length*100)}% complete`;el.classList.remove('hidden');
   }
   function close(){const el=document.getElementById('overlay-achievements');if(el)el.classList.add('hidden')}
   function addCounter(key,amount){const p=read();p[key]=(Number(p[key])||0)+Math.max(0,Number(amount)||0);write(p)}
@@ -69,11 +61,23 @@
     if(lastSnapshot){const order={locked:0,bronze:1,silver:2,gold:3};defs.forEach(def=>{if(order[snapshot[def.id]]>order[lastSnapshot[def.id]])showUnlock(def,snapshot[def.id])})}
     lastSnapshot=snapshot;
   }
+  function gameIsActive(){
+    const game=document.getElementById('game-ui'),pause=document.getElementById('overlay-pause'),win=document.getElementById('overlay-win'),lose=document.getElementById('overlay-lose');
+    return !!game&&!game.classList.contains('hidden')&&!(pause&&!pause.classList.contains('hidden'))&&!(win&&!win.classList.contains('hidden'))&&!(lose&&!lose.classList.contains('hidden'));
+  }
   function sampleHudCoins(){
+    if(!gameIsActive())return;
     const el=document.getElementById('coin-count');if(!el)return;
     const current=Math.max(0,parseInt(el.textContent.replace(/[^0-9-]/g,''),10)||0);
+    if(current<lastHudCoins){lastHudCoins=current;return;}
     if(current>lastHudCoins)addCounter('treasure',current-lastHudCoins);
     lastHudCoins=current;
+  }
+  function sampleScore(){
+    if(!gameIsActive())return;
+    const el=document.getElementById('score-current');if(!el||el.classList.contains('hidden'))return;
+    const current=Math.max(0,parseInt(el.textContent.replace(/[^0-9-]/g,''),10)||0);
+    setMax('bestScore',current);
   }
   function sampleSurvival(){
     const game=document.getElementById('game-ui'),pause=document.getElementById('overlay-pause');
@@ -82,7 +86,7 @@
     if(running&&runStartedAt)setMax('survival',(Date.now()-runStartedAt)/1000);
     lastRunningState=running;
   }
-  function poll(){sampleHudCoins();sampleSurvival();const progress=getProgress();checkUnlocks(progress);const overlay=document.getElementById('overlay-achievements');if(overlay&&!overlay.classList.contains('hidden'))open()}
+  function poll(){sampleHudCoins();sampleScore();sampleSurvival();const progress=getProgress();checkUnlocks(progress);const overlay=document.getElementById('overlay-achievements');if(overlay&&!overlay.classList.contains('hidden'))open()}
   function replaceAchievementHotspot(){const oldButton=document.getElementById('hotspot-achievements');if(!oldButton||!oldButton.parentNode)return;const fresh=oldButton.cloneNode(true);oldButton.parentNode.replaceChild(fresh,oldButton);fresh.addEventListener('click',open)}
   function init(){migrateOldData();replaceAchievementHotspot();ensureToast();lastSnapshot=null;poll();clearInterval(pollTimer);pollTimer=setInterval(poll,750)}
 
