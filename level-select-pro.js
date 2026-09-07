@@ -15,6 +15,7 @@
     });
   }
   function mark(levelNumber,starCount){try{const d=completedSet();d[levelNumber]=true;localStorage.setItem('gr_completed_levels',JSON.stringify(d));const s=JSON.parse(localStorage.getItem('gr_level_stars')||'{}');s[levelNumber]=Math.max(1,Math.min(3,Number(starCount||3)));localStorage.setItem('gr_level_stars',JSON.stringify(s))}catch(e){}}
-  window.LevelSelectPro={render,mark};
+  window.LevelSelectPro={render,mark}; window.renderLevelSelect=render;
   window.addEventListener('load',()=>setTimeout(render,0));
+  window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{if(typeof window.winLevel==='function'&&!window.__levelWinWrapped){const original=window.winLevel;window.winLevel=async function(){const result=await original.apply(this,arguments);try{mark(window.state.currentLevel.level_number,3)}catch(e){}return result};window.__levelWinWrapped=true}},0));
 })();
