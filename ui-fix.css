@@ -10,15 +10,12 @@
 #hull-bars{width:clamp(125px,16vw,180px)!important;max-width:180px!important;gap:3px!important}
 #hull-bar,#hull-bar-p2{min-width:0!important;height:10px!important;padding:1px 2px!important;font-size:clamp(7px,1vw,10px)!important}
 
-/* PRECISION REFERENCE HUD
-   Reference canvas: 1536 x 864.
-   P1 centers: 100,385 / 95,530 / 250,530 / 345,630 / 335,770 / 155,735.
-   P2 is the exact horizontal mirror. */
+/* PRECISION REFERENCE HUD */
 .power-button-cluster{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:1020!important;pointer-events:none!important}
 .power-button{position:absolute!important;width:clamp(52px,4.43vw,68px)!important;height:clamp(52px,4.43vw,68px)!important;padding:0!important;margin:0!important;border-radius:50%!important;border:2px solid rgba(255,255,255,.55)!important;background:rgba(10,18,42,.82)!important;box-shadow:0 5px 14px rgba(0,0,0,.42),inset 0 0 10px rgba(255,255,255,.12)!important;color:#fff!important;font-weight:800!important;font-size:clamp(11px,1.2vw,16px)!important;display:flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;pointer-events:auto!important;-webkit-tap-highlight-color:transparent!important;transform:translate(-50%,-50%)!important}
 .power-button-1{width:clamp(96px,8.85vw,136px)!important;height:clamp(96px,8.85vw,136px)!important;font-size:clamp(15px,1.45vw,21px)!important;z-index:3!important}
 
-/* P1 — exact reference proportions. */
+/* P1 — reference arrangement. */
 .p1-power-cluster .power-button-6{left:6.51vw!important;top:44.56vh!important}
 .p1-power-cluster .power-button-5{left:6.18vw!important;top:61.34vh!important}
 .p1-power-cluster .power-button-3{left:16.28vw!important;top:61.34vh!important}
@@ -26,8 +23,8 @@
 .p1-power-cluster .power-button-2{left:21.81vw!important;top:89.12vh!important}
 .p1-power-cluster .power-button-1{left:10.09vw!important;top:85.07vh!important}
 
-/* P2 — exact horizontal mirror of P1. */
-.p2-power-cluster .power-button-6{left:93.49vw!important;top:44.56vh!important}
+/* P2 — mirror of P1, with 5 and 6 brought closer vertically as requested. */
+.p2-power-cluster .power-button-6{left:93.49vw!important;top:48.0vh!important}
 .p2-power-cluster .power-button-5{left:93.82vw!important;top:61.34vh!important}
 .p2-power-cluster .power-button-3{left:83.72vw!important;top:61.34vh!important}
 .p2-power-cluster .power-button-4{left:77.54vw!important;top:72.92vh!important}
@@ -37,40 +34,16 @@
 .power-button:active{transform:translate(-50%,-50%) scale(.94)!important}
 .power-button span{display:block}
 .overlay.hidden .frame-hotspot,.screen.hidden .frame-photo-wrap .frame-hotspot,.title-frame .title-hotspot.hidden{display:none!important}
-.frame-photo-wrap img{position:relative!important;z-index:0!important}
-.frame-photo-wrap .frame-hotspot{position:absolute!important;z-index:2!important;background:transparent!important;pointer-events:auto!important}
+.frame-photo-wrap img{position:relative!important;z-index:0!important}.frame-photo-wrap .frame-hotspot{position:absolute!important;z-index:2!important;background:transparent!important;pointer-events:auto!important}
 button.frame-hotspot,button.title-hotspot{background:transparent!important;background-color:transparent!important;background-image:none!important;border:none!important;box-shadow:none!important;outline:none!important;color:transparent!important;opacity:1!important}
 
-/* Smaller screens: keep the same six-point pattern and mirror. */
 @media(max-width:700px){
-  .power-button{width:42px!important;height:42px!important}
-  .power-button-1{width:78px!important;height:78px!important}
-  .p1-power-cluster .power-button-6{left:48px!important;top:45vh!important}
-  .p1-power-cluster .power-button-5{left:46px!important;top:61vh!important}
-  .p1-power-cluster .power-button-3{left:145px!important;top:61vh!important}
-  .p1-power-cluster .power-button-4{left:205px!important;top:73vh!important}
-  .p1-power-cluster .power-button-2{left:198px!important;top:89vh!important}
-  .p1-power-cluster .power-button-1{left:96px!important;top:85vh!important}
-  .p2-power-cluster .power-button-6{left:calc(100% - 48px)!important;top:45vh!important}
-  .p2-power-cluster .power-button-5{left:calc(100% - 46px)!important;top:61vh!important}
-  .p2-power-cluster .power-button-3{left:calc(100% - 145px)!important;top:61vh!important}
-  .p2-power-cluster .power-button-4{left:calc(100% - 205px)!important;top:73vh!important}
-  .p2-power-cluster .power-button-2{left:calc(100% - 198px)!important;top:89vh!important}
-  .p2-power-cluster .power-button-1{left:calc(100% - 96px)!important;top:85vh!important}
+.power-button{width:42px!important;height:42px!important}.power-button-1{width:78px!important;height:78px!important}
+.p1-power-cluster .power-button-6{left:48px!important;top:45vh!important}.p1-power-cluster .power-button-5{left:46px!important;top:61vh!important}.p1-power-cluster .power-button-3{left:145px!important;top:61vh!important}.p1-power-cluster .power-button-4{left:205px!important;top:73vh!important}.p1-power-cluster .power-button-2{left:198px!important;top:89vh!important}.p1-power-cluster .power-button-1{left:96px!important;top:85vh!important}
+.p2-power-cluster .power-button-6{left:calc(100% - 48px)!important;top:48vh!important}.p2-power-cluster .power-button-5{left:calc(100% - 46px)!important;top:61vh!important}.p2-power-cluster .power-button-3{left:calc(100% - 145px)!important;top:61vh!important}.p2-power-cluster .power-button-4{left:calc(100% - 205px)!important;top:73vh!important}.p2-power-cluster .power-button-2{left:calc(100% - 198px)!important;top:89vh!important}.p2-power-cluster .power-button-1{left:calc(100% - 96px)!important;top:85vh!important}
 }
 @media(max-width:480px){
-  .power-button{width:36px!important;height:36px!important}
-  .power-button-1{width:64px!important;height:64px!important}
-  .p1-power-cluster .power-button-6{left:40px!important}
-  .p1-power-cluster .power-button-5{left:38px!important}
-  .p1-power-cluster .power-button-3{left:120px!important}
-  .p1-power-cluster .power-button-4{left:170px!important}
-  .p1-power-cluster .power-button-2{left:164px!important}
-  .p1-power-cluster .power-button-1{left:80px!important}
-  .p2-power-cluster .power-button-6{left:calc(100% - 40px)!important}
-  .p2-power-cluster .power-button-5{left:calc(100% - 38px)!important}
-  .p2-power-cluster .power-button-3{left:calc(100% - 120px)!important}
-  .p2-power-cluster .power-button-4{left:calc(100% - 170px)!important}
-  .p2-power-cluster .power-button-2{left:calc(100% - 164px)!important}
-  .p2-power-cluster .power-button-1{left:calc(100% - 80px)!important}
+.power-button{width:36px!important;height:36px!important}.power-button-1{width:64px!important;height:64px!important}
+.p1-power-cluster .power-button-6{left:40px!important}.p1-power-cluster .power-button-5{left:38px!important}.p1-power-cluster .power-button-3{left:120px!important}.p1-power-cluster .power-button-4{left:170px!important}.p1-power-cluster .power-button-2{left:164px!important}.p1-power-cluster .power-button-1{left:80px!important}
+.p2-power-cluster .power-button-6{left:calc(100% - 40px)!important;top:48vh!important}.p2-power-cluster .power-button-5{left:calc(100% - 38px)!important;top:61vh!important}.p2-power-cluster .power-button-3{left:calc(100% - 120px)!important;top:61vh!important}.p2-power-cluster .power-button-4{left:calc(100% - 170px)!important;top:73vh!important}.p2-power-cluster .power-button-2{left:calc(100% - 164px)!important;top:89vh!important}.p2-power-cluster .power-button-1{left:calc(100% - 80px)!important;top:85vh!important}
 }
