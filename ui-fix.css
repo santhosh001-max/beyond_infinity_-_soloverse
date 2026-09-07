@@ -10,26 +10,29 @@
 #hull-bars{width:clamp(125px,16vw,180px)!important;max-width:180px!important;gap:3px!important}
 #hull-bar,#hull-bar-p2{min-width:0!important;height:10px!important;padding:1px 2px!important;font-size:clamp(7px,1vw,10px)!important}
 
-/* Reference HUD layout: six controls arranged as a clean arc/diamond at each bottom corner. */
+/* PRECISION REFERENCE HUD
+   Reference canvas: 1536 x 864.
+   P1 centers: 100,385 / 95,530 / 250,530 / 345,630 / 335,770 / 155,735.
+   P2 is the exact horizontal mirror. */
 .power-button-cluster{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:1020!important;pointer-events:none!important}
-.power-button{position:absolute!important;width:clamp(52px,5.1vw,68px)!important;height:clamp(52px,5.1vw,68px)!important;padding:0!important;margin:0!important;border-radius:50%!important;border:2px solid rgba(255,255,255,.55)!important;background:rgba(10,18,42,.82)!important;box-shadow:0 5px 14px rgba(0,0,0,.42),inset 0 0 10px rgba(255,255,255,.12)!important;color:#fff!important;font-weight:800!important;font-size:clamp(11px,1.4vw,16px)!important;display:flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;pointer-events:auto!important;-webkit-tap-highlight-color:transparent!important;transform:translate(-50%,-50%)!important}
-.power-button-1{width:clamp(96px,10.5vw,136px)!important;height:clamp(96px,10.5vw,136px)!important;font-size:clamp(15px,1.8vw,21px)!important;z-index:3!important}
+.power-button{position:absolute!important;width:clamp(52px,4.43vw,68px)!important;height:clamp(52px,4.43vw,68px)!important;padding:0!important;margin:0!important;border-radius:50%!important;border:2px solid rgba(255,255,255,.55)!important;background:rgba(10,18,42,.82)!important;box-shadow:0 5px 14px rgba(0,0,0,.42),inset 0 0 10px rgba(255,255,255,.12)!important;color:#fff!important;font-weight:800!important;font-size:clamp(11px,1.2vw,16px)!important;display:flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;pointer-events:auto!important;-webkit-tap-highlight-color:transparent!important;transform:translate(-50%,-50%)!important}
+.power-button-1{width:clamp(96px,8.85vw,136px)!important;height:clamp(96px,8.85vw,136px)!important;font-size:clamp(15px,1.45vw,21px)!important;z-index:3!important}
 
-/* P1 positions are based directly on the supplied reference at 1536x864. */
-.p1-power-cluster .power-button-6{left:clamp(70px,6.5vw,105px)!important;top:44.6vh!important}
-.p1-power-cluster .power-button-5{left:clamp(70px,6.2vw,100px)!important;top:61.3vh!important}
-.p1-power-cluster .power-button-3{left:clamp(175px,16.3vw,255px)!important;top:61.3vh!important}
-.p1-power-cluster .power-button-4{left:clamp(245px,22.5vw,350px)!important;top:73.0vh!important}
-.p1-power-cluster .power-button-2{left:clamp(235px,21.8vw,340px)!important;top:89.1vh!important}
-.p1-power-cluster .power-button-1{left:clamp(115px,10.1vw,160px)!important;top:85.1vh!important}
+/* P1 — exact reference proportions. */
+.p1-power-cluster .power-button-6{left:6.51vw!important;top:44.56vh!important}
+.p1-power-cluster .power-button-5{left:6.18vw!important;top:61.34vh!important}
+.p1-power-cluster .power-button-3{left:16.28vw!important;top:61.34vh!important}
+.p1-power-cluster .power-button-4{left:22.46vw!important;top:72.92vh!important}
+.p1-power-cluster .power-button-2{left:21.81vw!important;top:89.12vh!important}
+.p1-power-cluster .power-button-1{left:10.09vw!important;top:85.07vh!important}
 
-/* P2 is the exact horizontal mirror of P1. */
-.p2-power-cluster .power-button-6{left:calc(100% - clamp(70px,6.5vw,105px))!important;top:44.6vh!important}
-.p2-power-cluster .power-button-5{left:calc(100% - clamp(70px,6.2vw,100px))!important;top:61.3vh!important}
-.p2-power-cluster .power-button-3{left:calc(100% - clamp(175px,16.3vw,255px))!important;top:61.3vh!important}
-.p2-power-cluster .power-button-4{left:calc(100% - clamp(245px,22.5vw,350px))!important;top:73.0vh!important}
-.p2-power-cluster .power-button-2{left:calc(100% - clamp(235px,21.8vw,340px))!important;top:89.1vh!important}
-.p2-power-cluster .power-button-1{left:calc(100% - clamp(115px,10.1vw,160px))!important;top:85.1vh!important}
+/* P2 — exact horizontal mirror of P1. */
+.p2-power-cluster .power-button-6{left:93.49vw!important;top:44.56vh!important}
+.p2-power-cluster .power-button-5{left:93.82vw!important;top:61.34vh!important}
+.p2-power-cluster .power-button-3{left:83.72vw!important;top:61.34vh!important}
+.p2-power-cluster .power-button-4{left:77.54vw!important;top:72.92vh!important}
+.p2-power-cluster .power-button-2{left:78.19vw!important;top:89.12vh!important}
+.p2-power-cluster .power-button-1{left:89.91vw!important;top:85.07vh!important}
 
 .power-button:active{transform:translate(-50%,-50%) scale(.94)!important}
 .power-button span{display:block}
@@ -38,7 +41,7 @@
 .frame-photo-wrap .frame-hotspot{position:absolute!important;z-index:2!important;background:transparent!important;pointer-events:auto!important}
 button.frame-hotspot,button.title-hotspot{background:transparent!important;background-color:transparent!important;background-image:none!important;border:none!important;box-shadow:none!important;outline:none!important;color:transparent!important;opacity:1!important}
 
-/* Mobile: preserve the same visual pattern while scaling the controls down. */
+/* Smaller screens: keep the same six-point pattern and mirror. */
 @media(max-width:700px){
   .power-button{width:42px!important;height:42px!important}
   .power-button-1{width:78px!important;height:78px!important}
