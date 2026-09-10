@@ -1,1 +1,248 @@
-#overlay-shop.shipyard-enhanced{background:radial-gradient(circle at 50% 35%,rgba(32,88,150,.22),transparent 42%),linear-gradient(145deg,rgba(3,10,24,.98),rgba(7,18,38,.97));overflow:auto;padding:clamp(18px,4vw,42px)}#overlay-shop.shipyard-enhanced h1{letter-spacing:.16em;text-shadow:0 0 18px rgba(92,190,255,.7);margin:0 0 4px}.shipyard-stage{position:relative;display:grid;grid-template-columns:minmax(220px,1fr) minmax(280px,1.15fr);gap:clamp(18px,4vw,42px);width:min(1050px,100%);margin:22px auto 18px}.shipyard-preview,.shipyard-specs,.shipyard-roster-card{position:relative;border:1px solid rgba(92,190,255,.28);background:linear-gradient(145deg,rgba(12,31,57,.82),rgba(3,11,25,.9));box-shadow:inset 0 0 35px rgba(43,135,218,.08),0 16px 50px rgba(0,0,0,.35);border-radius:18px}.shipyard-preview{min-height:330px;display:grid;place-items:center;overflow:hidden}.shipyard-preview:before,.shipyard-preview:after{content:"";position:absolute;inset:18px;border:1px solid rgba(92,190,255,.12);border-radius:50%;transform:rotate(18deg) scaleX(1.35);animation:hangarRing 9s linear infinite}.shipyard-preview:after{inset:46px;border-style:dashed;opacity:.55;animation-direction:reverse;animation-duration:14s}.shipyard-grid{position:absolute;inset:0;background:linear-gradient(rgba(92,190,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(92,190,255,.055) 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(to bottom,transparent,black 25%,black 75%,transparent)}.shipyard-ship{position:relative;z-index:2;width:min(68%,310px);max-height:240px;object-fit:contain;filter:drop-shadow(0 0 18px rgba(91,191,255,.75));animation:shipFloat 4.2s ease-in-out infinite;transform:translateZ(0)}.shipyard-status{position:absolute;left:16px;top:14px;font-size:.7rem;letter-spacing:.14em;color:#7edcff}.shipyard-status:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#72ffcf;box-shadow:0 0 10px #72ffcf;margin-right:7px}.shipyard-specs{padding:22px}.shipyard-identity{display:flex;align-items:end;justify-content:space-between;gap:14px;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:14px}.shipyard-identity h2{margin:0;font-size:clamp(1.2rem,3vw,1.8rem);letter-spacing:.08em}.shipyard-level{font-size:.75rem;color:#7edcff;letter-spacing:.12em}.shipyard-stat{margin-top:17px}.shipyard-stat-head{display:flex;justify-content:space-between;font-size:.78rem;letter-spacing:.08em;color:#b9d6ec}.shipyard-stat-track{height:7px;margin-top:7px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}.shipyard-stat-fill{height:100%;width:0;background:linear-gradient(90deg,#4bbdff,#8c7dff);box-shadow:0 0 12px rgba(75,189,255,.65);border-radius:99px;transition:width .55s ease}.shipyard-equipment{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.shipyard-chip{padding:7px 10px;border:1px solid rgba(126,220,255,.22);border-radius:999px;background:rgba(72,151,214,.08);font-size:.7rem;color:#9ddfff}.shipyard-enhanced #shop-list{display:grid;gap:12px;width:min(1050px,100%);margin:0 auto 18px}.shipyard-enhanced .shop-item{border:1px solid rgba(126,220,255,.18);background:rgba(9,25,46,.72);border-radius:14px;transition:transform .2s ease,border-color .2s ease,background .2s ease;overflow:hidden}.shipyard-enhanced .shop-item:hover{transform:translateY(-2px);border-color:rgba(126,220,255,.5);background:rgba(14,37,64,.82)}.shipyard-enhanced .rupee-total{width:max-content;margin:0 auto;padding:7px 14px;border:1px solid rgba(126,220,255,.2);border-radius:999px;background:rgba(4,15,30,.7);color:#bfe8ff}.shipyard-enhanced #btn-close-shop{margin-top:4px}.shipyard-roster-title{grid-column:1/-1;margin:8px 0 10px;color:#7edcff;font-size:.72rem;letter-spacing:.18em;text-align:left}.shipyard-enhanced #shipyard-roster{width:min(1050px,100%);margin:4px auto 20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.shipyard-roster-card{overflow:hidden;padding:0;min-height:310px;cursor:pointer;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;background:radial-gradient(circle at 50% 42%,rgba(49,125,190,.18),transparent 48%),linear-gradient(145deg,rgba(10,27,50,.94),rgba(3,10,23,.98))}.shipyard-roster-card:hover{transform:translateY(-5px);border-color:rgba(126,220,255,.6);box-shadow:inset 0 0 40px rgba(43,135,218,.1),0 18px 55px rgba(0,0,0,.45)}.shipyard-roster-card.is-equipped{border-color:rgba(114,255,207,.65);box-shadow:inset 0 0 42px rgba(114,255,207,.08),0 0 28px rgba(114,255,207,.1)}.shipyard-roster-card.is-purple{background:radial-gradient(circle at 50% 42%,rgba(162,89,255,.25),transparent 48%),linear-gradient(145deg,rgba(31,16,60,.95),rgba(10,5,25,.98));border-color:rgba(162,89,255,.42)}.shipyard-roster-top{display:flex;justify-content:space-between;padding:12px 14px;color:#8ba7be;font-size:.65rem;letter-spacing:.14em}.shipyard-roster-state{color:#72ffcf}.is-purple .shipyard-roster-state{color:#d2b2ff}.shipyard-roster-visual{height:175px;position:relative;display:grid;place-items:center;overflow:hidden}.shipyard-roster-ring{position:absolute;width:150px;height:72px;border:1px solid rgba(126,220,255,.22);border-radius:50%;transform:rotate(-8deg) scaleY(.7);animation:rosterRing 7s linear infinite}.is-purple .shipyard-roster-ring{border-color:rgba(190,125,255,.4)}.shipyard-roster-ship{position:relative;z-index:2;width:78%;height:150px;object-fit:contain;object-position:center;display:block;filter:drop-shadow(0 0 17px rgba(91,191,255,.72));animation:rosterFloat 3.8s ease-in-out infinite}.is-purple .shipyard-roster-ship{filter:drop-shadow(0 0 20px rgba(162,89,255,.9))}.shipyard-roster-name{padding:0 14px;text-align:center;font-size:1.1rem;font-weight:800;letter-spacing:.12em;color:#d9efff}.is-purple .shipyard-roster-name{color:#eadbff}.shipyard-roster-level{text-align:center;margin-top:6px;color:#7edcff;font-size:.7rem;letter-spacing:.12em}.shipyard-roster-level b{color:#fff}.shipyard-roster-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:14px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08);text-align:center;color:#8ba7be;font-size:.62rem;letter-spacing:.08em}.shipyard-roster-stats b{display:block;margin-top:3px;color:#dff5ff;font-size:.8rem}.is-purple .shipyard-roster-stats b{color:#eadbff}@keyframes shipFloat{0%,100%{transform:translate3d(0,0,0) rotate(-1deg)}50%{transform:translate3d(0,-9px,0) rotate(1deg)}}@keyframes rosterFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-7px) rotate(1deg)}}@keyframes rosterRing{to{transform:rotate(360deg) scaleY(.7)}}@keyframes hangarRing{to{transform:rotate(378deg) scaleX(1.35)}}@media(max-width:700px){.shipyard-stage{grid-template-columns:1fr;gap:14px}.shipyard-preview{min-height:240px}.shipyard-ship{width:58%;max-height:175px}.shipyard-specs{padding:16px}.shipyard-enhanced #shipyard-roster{grid-template-columns:1fr;gap:12px}.shipyard-roster-card{min-height:285px}.shipyard-roster-visual{height:155px}.shipyard-roster-ship{height:140px}.shipyard-enhanced #shop-list{margin-bottom:12px}}@media(prefers-reduced-motion:reduce){.shipyard-ship,.shipyard-preview:before,.shipyard-preview:after,.shipyard-roster-ship,.shipyard-roster-ring{animation:none}.shipyard-stat-fill,.shipyard-enhanced .shop-item,.shipyard-roster-card{transition:none}}
+/* SHIPYARD // AURORA-STYLE UI */
+#overlay-shop.shipyard-enhanced{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  overflow-x:hidden;
+  overflow-y:auto;
+  padding:clamp(18px,4vw,38px) clamp(14px,4vw,34px) 34px;
+  color:#e9f7ff;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(28,119,220,.22),transparent 34%),
+    radial-gradient(circle at 50% 72%,rgba(19,80,150,.14),transparent 42%),
+    linear-gradient(145deg,#020914 0%,#06172d 52%,#020914 100%);
+}
+
+#overlay-shop.shipyard-enhanced:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.55;
+  background-image:
+    linear-gradient(rgba(91,190,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(91,190,255,.035) 1px,transparent 1px);
+  background-size:34px 34px;
+  mask-image:linear-gradient(to bottom,transparent,black 12%,black 88%,transparent);
+}
+
+#overlay-shop.shipyard-enhanced h1{
+  order:1;
+  position:relative;
+  width:min(1050px,100%);
+  margin:0;
+  padding:4px 0 2px 16px;
+  box-sizing:border-box;
+  text-align:left;
+  font-size:clamp(1.35rem,4vw,2.15rem);
+  line-height:1.05;
+  letter-spacing:.18em;
+  color:#f3fbff;
+  text-shadow:0 0 14px rgba(71,198,255,.65),0 0 34px rgba(71,198,255,.2);
+}
+
+#overlay-shop.shipyard-enhanced h1:after{
+  content:"UPGRADE  •  EQUIP  •  EXPLORE";
+  display:block;
+  margin-top:7px;
+  font-size:clamp(.55rem,1.7vw,.78rem);
+  font-weight:600;
+  letter-spacing:.2em;
+  color:#58d8ff;
+  text-shadow:0 0 10px rgba(54,210,255,.45);
+}
+
+#overlay-shop.shipyard-enhanced .rupee-total{
+  order:2;
+  align-self:flex-end;
+  width:auto;
+  min-width:150px;
+  margin:10px max(0px,calc((100% - 1050px)/2)) 8px 0;
+  padding:9px 16px;
+  box-sizing:border-box;
+  border:1px solid rgba(52,193,255,.65);
+  border-radius:12px;
+  background:linear-gradient(135deg,rgba(10,53,92,.86),rgba(3,17,35,.94));
+  color:#c8f2ff;
+  text-align:center;
+  font-weight:800;
+  letter-spacing:.06em;
+  box-shadow:inset 0 0 20px rgba(33,151,226,.12),0 0 18px rgba(32,154,228,.1);
+}
+
+/* Fleet selector */
+#overlay-shop.shipyard-enhanced #shipyard-roster{
+  order:3;
+  width:min(1050px,100%);
+  margin:12px auto 18px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+}
+
+.shipyard-roster-card{
+  position:relative;
+  min-width:0;
+  min-height:255px;
+  padding:0;
+  overflow:hidden;
+  border:1px solid rgba(75,190,255,.42);
+  border-radius:18px;
+  cursor:pointer;
+  color:inherit;
+  text-align:inherit;
+  background:
+    radial-gradient(circle at 50% 43%,rgba(50,145,215,.22),transparent 48%),
+    linear-gradient(145deg,rgba(8,31,58,.96),rgba(2,11,25,.98));
+  box-shadow:inset 0 0 36px rgba(47,162,228,.07),0 12px 32px rgba(0,0,0,.38);
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+}
+
+.shipyard-roster-card:hover{transform:translateY(-3px);border-color:rgba(91,214,255,.8);box-shadow:inset 0 0 38px rgba(47,162,228,.1),0 15px 38px rgba(0,0,0,.45)}
+.shipyard-roster-card:focus-visible{outline:2px solid #8ee8ff;outline-offset:3px}
+.shipyard-roster-card.is-equipped{border-color:#39dfff;box-shadow:inset 0 0 38px rgba(46,208,255,.12),0 0 24px rgba(46,208,255,.12)}
+.shipyard-roster-card.is-purple{
+  background:radial-gradient(circle at 50% 43%,rgba(154,78,255,.3),transparent 49%),linear-gradient(145deg,rgba(35,16,65,.97),rgba(10,4,25,.99));
+  border-color:rgba(169,92,255,.62);
+}
+.shipyard-roster-card.is-purple:hover{border-color:#c07cff;box-shadow:inset 0 0 42px rgba(159,82,255,.12),0 15px 38px rgba(0,0,0,.48)}
+
+.shipyard-roster-top{display:flex;justify-content:space-between;align-items:center;padding:11px 14px 0;color:#86a9c1;font-size:.63rem;letter-spacing:.16em}
+.shipyard-roster-state{color:#6dffca;font-weight:800}
+.is-purple .shipyard-roster-state{color:#d8b7ff}
+.shipyard-roster-visual{position:relative;height:140px;display:grid;place-items:center;overflow:hidden}
+.shipyard-roster-ring{position:absolute;width:150px;height:62px;border:1px solid rgba(111,215,255,.25);border-radius:50%;transform:rotate(-8deg) scaleY(.7);animation:rosterRing 8s linear infinite}
+.is-purple .shipyard-roster-ring{border-color:rgba(193,126,255,.48)}
+.shipyard-roster-ship{position:relative;z-index:2;width:76%;height:130px;object-fit:contain;object-position:center;display:block;filter:drop-shadow(0 0 18px rgba(65,196,255,.82));animation:rosterFloat 4s ease-in-out infinite}
+.is-purple .shipyard-roster-ship{filter:drop-shadow(0 0 22px rgba(165,83,255,.95))}
+.shipyard-roster-name{padding:0 12px;text-align:center;font-size:clamp(.95rem,2.6vw,1.18rem);font-weight:900;letter-spacing:.13em;color:#e5f8ff}
+.is-purple .shipyard-roster-name{color:#f0e2ff}
+.shipyard-roster-level{margin-top:5px;text-align:center;color:#67dcff;font-size:.67rem;letter-spacing:.13em}
+.shipyard-roster-level b{color:#fff}
+.shipyard-roster-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:11px 14px 0;padding-top:9px;border-top:1px solid rgba(255,255,255,.1);text-align:center;color:#89a9bd;font-size:.58rem;letter-spacing:.08em}
+.shipyard-roster-stats b{display:block;margin-top:3px;color:#e5f7ff;font-size:.76rem}
+.is-purple .shipyard-roster-stats b{color:#f0e2ff}
+.shipyard-select-hint{display:block;padding:8px 10px 12px;text-align:center;color:#58d8ff;font-size:.58rem;letter-spacing:.14em;font-weight:800}
+.is-equipped .shipyard-select-hint{color:#70ffcf}
+.is-purple .shipyard-select-hint{color:#d3a9ff}
+
+/* Main active ship system */
+#overlay-shop.shipyard-enhanced .shipyard-stage{
+  order:4;
+  position:relative;
+  width:min(1050px,100%);
+  margin:0 auto 18px;
+  display:grid;
+  grid-template-columns:minmax(0,1.12fr) minmax(280px,.88fr);
+  gap:16px;
+}
+
+.shipyard-preview,.shipyard-specs{
+  position:relative;
+  min-width:0;
+  border:1px solid rgba(72,190,255,.34);
+  border-radius:20px;
+  background:linear-gradient(145deg,rgba(7,28,53,.9),rgba(2,12,27,.96));
+  box-shadow:inset 0 0 45px rgba(39,143,218,.08),0 15px 40px rgba(0,0,0,.38);
+}
+
+.shipyard-preview{
+  min-height:390px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+.shipyard-preview:before,.shipyard-preview:after{content:"";position:absolute;inset:28px;border:1px solid rgba(71,201,255,.14);border-radius:50%;transform:rotate(18deg) scaleX(1.35);animation:hangarRing 12s linear infinite}
+.shipyard-preview:after{inset:70px;border-style:dashed;opacity:.55;animation-direction:reverse;animation-duration:17s}
+.shipyard-grid{position:absolute;inset:0;background:linear-gradient(rgba(85,202,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(85,202,255,.05) 1px,transparent 1px);background-size:30px 30px;mask-image:linear-gradient(to bottom,transparent,black 20%,black 80%,transparent)}
+.shipyard-status{position:absolute;z-index:4;left:18px;top:16px;color:#69dcff;font-size:.67rem;letter-spacing:.17em;font-weight:700}
+.shipyard-status:before{content:"";display:inline-block;width:8px;height:8px;margin-right:8px;border-radius:50%;background:#70ffcf;box-shadow:0 0 11px #70ffcf}
+.shipyard-ship{position:relative;z-index:3;width:min(76%,350px);height:290px;object-fit:contain;object-position:center;filter:drop-shadow(0 0 24px rgba(66,199,255,.85));animation:shipFloat 4.2s ease-in-out infinite;transform:translateZ(0)}
+.shipyard-ship.ship-purple{filter:drop-shadow(0 0 26px rgba(166,84,255,.95))}
+
+.shipyard-specs{padding:22px}
+.shipyard-identity{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.1)}
+.shipyard-identity h2{margin:4px 0 0;font-size:clamp(1.3rem,3vw,1.9rem);letter-spacing:.1em;color:#f2fbff}
+.shipyard-level{color:#66dcff;font-size:.67rem;letter-spacing:.14em;font-weight:700}
+.shipyard-level-value{white-space:nowrap}
+.shipyard-stat{margin-top:19px}
+.shipyard-stat-head{display:flex;justify-content:space-between;gap:10px;color:#bcd9e9;font-size:.72rem;letter-spacing:.1em}
+.shipyard-stat-track{height:9px;margin-top:8px;border-radius:99px;overflow:hidden;background:rgba(255,255,255,.08);box-shadow:inset 0 1px 3px rgba(0,0,0,.5)}
+.shipyard-stat-fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#29caff,#7de7ff);box-shadow:0 0 14px rgba(41,202,255,.7);transition:width .5s ease}
+.shipyard-stat-fill.armor{background:linear-gradient(90deg,#61a9ff,#8e7dff)}
+.shipyard-equipment{display:flex;flex-wrap:wrap;gap:7px;margin-top:23px}
+.shipyard-chip{padding:7px 9px;border:1px solid rgba(92,211,255,.22);border-radius:999px;background:rgba(56,151,214,.08);color:#9edff7;font-size:.57rem;letter-spacing:.08em}
+.shipyard-roster-title{display:none}
+
+/* Existing upgrade rows, styled as premium upgrade modules */
+#overlay-shop.shipyard-enhanced #shop-list{
+  order:5;
+  width:min(1050px,100%);
+  margin:0 auto 16px;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+#overlay-shop.shipyard-enhanced .shop-item{
+  min-width:0;
+  border:1px solid rgba(72,190,255,.22);
+  border-radius:15px;
+  overflow:hidden;
+  background:linear-gradient(145deg,rgba(9,29,52,.9),rgba(3,13,28,.96));
+  box-shadow:inset 0 0 24px rgba(47,151,220,.06);
+  transition:transform .2s ease,border-color .2s ease,background .2s ease;
+}
+#overlay-shop.shipyard-enhanced .shop-item:hover{transform:translateY(-2px);border-color:rgba(91,214,255,.55);background:rgba(12,38,67,.95)}
+
+#overlay-shop.shipyard-enhanced #btn-close-shop{
+  order:6;
+  width:min(280px,100%);
+  margin:2px auto 0;
+  border:1px solid rgba(90,207,255,.45);
+  border-radius:12px;
+  background:linear-gradient(135deg,rgba(8,47,78,.95),rgba(3,18,35,.98));
+  color:#bfeeff;
+  font-weight:800;
+  letter-spacing:.08em;
+  box-shadow:0 0 18px rgba(46,172,238,.08);
+}
+
+@keyframes shipFloat{0%,100%{transform:translate3d(0,0,0) rotate(-1deg)}50%{transform:translate3d(0,-9px,0) rotate(1deg)}}
+@keyframes rosterFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-6px) rotate(1deg)}}
+@keyframes rosterRing{to{transform:rotate(360deg) scaleY(.7)}}
+@keyframes hangarRing{to{transform:rotate(378deg) scaleX(1.35)}}
+
+@media(max-width:760px){
+  #overlay-shop.shipyard-enhanced{padding:14px 10px 28px}
+  #overlay-shop.shipyard-enhanced h1{padding-left:8px;font-size:1.35rem}
+  #overlay-shop.shipyard-enhanced .rupee-total{align-self:flex-end;margin-right:0;min-width:135px;font-size:.78rem}
+  #overlay-shop.shipyard-enhanced #shipyard-roster{grid-template-columns:1fr;gap:10px;margin-top:8px}
+  .shipyard-roster-card{min-height:235px}
+  .shipyard-roster-visual{height:118px}
+  .shipyard-roster-ship{height:112px;width:67%}
+  #overlay-shop.shipyard-enhanced .shipyard-stage{grid-template-columns:1fr;gap:12px}
+  .shipyard-preview{min-height:310px}
+  .shipyard-ship{width:65%;height:235px}
+  .shipyard-specs{padding:17px}
+  #overlay-shop.shipyard-enhanced #shop-list{grid-template-columns:1fr;gap:9px}
+}
+
+@media(max-width:430px){
+  #overlay-shop.shipyard-enhanced h1{font-size:1.18rem;letter-spacing:.13em}
+  #overlay-shop.shipyard-enhanced h1:after{font-size:.5rem;letter-spacing:.14em}
+  .shipyard-roster-card{min-height:225px}
+  .shipyard-roster-visual{height:108px}
+  .shipyard-roster-ship{height:103px}
+  .shipyard-preview{min-height:280px}
+  .shipyard-ship{height:205px}
+  .shipyard-specs{padding:14px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .shipyard-ship,.shipyard-preview:before,.shipyard-preview:after,.shipyard-roster-ship,.shipyard-roster-ring{animation:none}
+  .shipyard-stat-fill,.shipyard-enhanced .shop-item,.shipyard-roster-card{transition:none}
+}
