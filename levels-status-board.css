@@ -1,0 +1,62 @@
+/* Beyond Infinity: Soloverse — Levels Status Board */
+#bi-level-status-board {
+  position:absolute;
+  z-index:60;
+  inset:10px 14px auto 14px;
+  height:clamp(66px,11vh,102px);
+  display:grid;
+  grid-template-columns:minmax(150px,1.05fr) repeat(4,minmax(115px,1fr)) minmax(190px,1.45fr) minmax(150px,.9fr);
+  gap:7px;
+  pointer-events:none;
+  font-family:Arial,Helvetica,sans-serif;
+  color:#eaf9ff;
+  text-shadow:0 0 8px rgba(0,210,255,.35);
+}
+.bi-hud-panel{
+  position:relative;
+  min-width:0;
+  overflow:hidden;
+  border:1px solid rgba(0,190,255,.62);
+  border-radius:13px;
+  background:linear-gradient(180deg,rgba(5,19,42,.92),rgba(3,8,22,.88));
+  box-shadow:inset 0 0 18px rgba(0,140,255,.12),0 0 14px rgba(0,110,255,.12);
+  clip-path:polygon(0 12%,3% 0,97% 0,100% 14%,100% 86%,97% 100%,3% 100%,0 86%);
+}
+.bi-hud-panel::after{
+  content:"";
+  position:absolute;left:8%;right:8%;top:0;height:1px;
+  background:linear-gradient(90deg,transparent,#27dcff,transparent);
+  opacity:.7;
+}
+.bi-ship-panel{display:flex;align-items:center;gap:9px;padding:8px 12px 8px 10px}
+.bi-ship-mark{width:40px;height:40px;display:grid;place-items:center;border:1px solid rgba(0,220,255,.55);border-radius:50%;font-size:24px;color:#59eaff;box-shadow:0 0 13px rgba(0,200,255,.25)}
+.bi-kicker{font-size:10px;letter-spacing:1.5px;color:#73dfff;font-weight:800}
+.bi-ship-name{font-size:18px;font-weight:900;letter-spacing:1px;white-space:nowrap}
+.bi-level-name{font-size:10px;color:#a7b9d7;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bi-stat{padding:8px 10px;display:flex;flex-direction:column;justify-content:center}
+.bi-stat-head{display:flex;justify-content:space-between;align-items:center;gap:5px;font-size:10px;color:#a7c7e9;font-weight:800;letter-spacing:.7px}
+.bi-stat-value{font-size:14px;font-weight:900;margin-top:2px;white-space:nowrap}
+.bi-meter{height:5px;margin-top:6px;border-radius:5px;background:rgba(72,101,145,.28);overflow:hidden}
+.bi-meter-fill{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#00aaff,#63f5ff);box-shadow:0 0 9px rgba(0,218,255,.75);transition:width .18s ease}
+.bi-objective{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:9px;padding:8px 12px}
+.bi-planet-orb{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:22px;background:radial-gradient(circle at 35% 30%,#f1f1f1,#8d929d 48%,#343945 72%,#11141d);box-shadow:0 0 18px rgba(180,220,255,.3)}
+.bi-objective-title{font-size:14px;font-weight:900;letter-spacing:.8px}
+.bi-objective-sub{font-size:10px;color:#54eaff;margin-top:3px;font-weight:800;letter-spacing:.6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bi-right{padding:7px 9px;display:grid;grid-template-columns:1fr 1fr;gap:4px 9px;align-content:center}
+.bi-mini{font-size:9px;color:#8da6c8;letter-spacing:.7px}
+.bi-mini b{display:block;color:#f2fbff;font-size:12px;margin-top:1px}
+.bi-level-chip{position:absolute;left:10px;bottom:4px;font-size:8px;color:#6feaff;letter-spacing:1px;font-weight:900}
+.bi-board-corner{position:absolute;right:7px;top:6px;font-size:9px;color:#728aa9}
+@media(max-width:900px){
+  #bi-level-status-board{inset:7px 7px auto 7px;grid-template-columns:1.1fr repeat(3,1fr) 1.25fr .8fr;height:72px;gap:4px}
+  .bi-stat:nth-of-type(4){display:none}
+  .bi-ship-name{font-size:14px}.bi-ship-mark{width:31px;height:31px;font-size:18px}
+  .bi-objective-title{font-size:11px}.bi-stat-value{font-size:11px}.bi-stat-head{font-size:8px}.bi-kicker,.bi-level-name{font-size:8px}.bi-right{padding:5px}
+}
+@media(max-width:650px){
+  #bi-level-status-board{height:60px;grid-template-columns:1.25fr repeat(2,1fr) 1.15fr .72fr}
+  .bi-stat:nth-of-type(3),.bi-stat:nth-of-type(4){display:none}
+  .bi-objective{padding:5px 7px}.bi-planet-orb{width:27px;height:27px;font-size:14px}.bi-objective-sub{font-size:8px}
+  .bi-ship-panel{padding:5px 7px}.bi-ship-name{font-size:11px}.bi-level-name{font-size:7px}.bi-ship-mark{width:25px;height:25px;font-size:14px}
+  .bi-right{grid-template-columns:1fr}.bi-mini:nth-child(2){display:none}.bi-mini{font-size:7px}.bi-mini b{font-size:9px}
+}
