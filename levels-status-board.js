@@ -25,17 +25,13 @@
 
   function levelNumber() {
     const current = window.state && window.state.currentLevel;
-    if (current && Number.isFinite(Number(current.level_number))) {
-      return Math.max(1, Math.min(8, Number(current.level_number)));
-    }
+    if (current && Number.isFinite(Number(current.level_number))) return Math.max(1, Math.min(8, Number(current.level_number)));
     const label = el('level-label');
     const match = label && String(label.textContent).match(/(\d+)/);
     return match ? Math.max(1, Math.min(8, Number(match[1]))) : 1;
   }
 
-  function isLevelsMode() {
-    return !!(window.state && window.state.mode === 'levels');
-  }
+  function isLevelsMode() { return !!(window.state && window.state.mode === 'levels'); }
 
   function readHull() {
     const label = el('hull-label');
@@ -43,20 +39,9 @@
     return match ? Number(match[1]) : 100;
   }
 
-  function readScore() {
-    const n = el('score-current');
-    return n ? numberFrom(n.textContent, 0) : 0;
-  }
-
-  function readBest() {
-    const n = el('score-best');
-    return n ? numberFrom(n.textContent, 0) : 0;
-  }
-
-  function readCoins() {
-    const n = el('coin-count');
-    return n ? numberFrom(n.textContent, 0) : 0;
-  }
+  function readScore() { const n = el('score-current'); return n ? numberFrom(n.textContent, 0) : 0; }
+  function readBest() { const n = el('score-best'); return n ? numberFrom(n.textContent, 0) : 0; }
+  function readCoins() { const n = el('coin-count'); return n ? numberFrom(n.textContent, 0) : 0; }
 
   function readProgress() {
     const fill = el('path-fill');
@@ -76,73 +61,27 @@
     board.innerHTML = `
       <div class="bi-hud-panel bi-ship-panel">
         <div class="bi-ship-mark">✦</div>
-        <div>
-          <div class="bi-kicker">CURRENT MISSION</div>
-          <div class="bi-ship-name" id="bi-ship-name">AURORA</div>
-          <div class="bi-level-name" id="bi-level-name">LEVEL 01 • THE MOON</div>
-        </div>
+        <div><div class="bi-kicker">CURRENT MISSION</div><div class="bi-ship-name" id="bi-ship-name">AURORA</div><div class="bi-level-name" id="bi-level-name">LEVEL 01 • THE MOON</div></div>
         <span class="bi-level-chip">SOLOVERSE / LEVELS</span>
       </div>
-
-      <div class="bi-hud-panel bi-stat">
-        <div class="bi-stat-head"><span>HEALTH</span><span id="bi-hull-value">100 / 100</span></div>
-        <div class="bi-stat-value">HULL INTEGRITY</div>
-        <div class="bi-meter"><div class="bi-meter-fill" id="bi-hull-meter"></div></div>
-      </div>
-
-      <div class="bi-hud-panel bi-stat">
-        <div class="bi-stat-head"><span>SHIELD</span><span id="bi-shield-value">100 / 100</span></div>
-        <div class="bi-stat-value">PROTECTION</div>
-        <div class="bi-meter"><div class="bi-meter-fill" id="bi-shield-meter"></div></div>
-      </div>
-
-      <div class="bi-hud-panel bi-stat">
-        <div class="bi-stat-head"><span>SPEED</span><span id="bi-speed-value">80 / 100</span></div>
-        <div class="bi-stat-value">CRUISE</div>
-        <div class="bi-meter"><div class="bi-meter-fill" id="bi-speed-meter"></div></div>
-      </div>
-
-      <div class="bi-hud-panel bi-stat">
-        <div class="bi-stat-head"><span>DISTANCE</span><span id="bi-distance-value">0 / 2,500</span></div>
-        <div class="bi-stat-value">MISSION PROGRESS</div>
-        <div class="bi-meter"><div class="bi-meter-fill" id="bi-distance-meter"></div></div>
-      </div>
-
-      <div class="bi-hud-panel bi-objective">
-        <div class="bi-planet-orb" id="bi-planet-orb">🌕</div>
-        <div>
-          <div class="bi-kicker">PRIMARY OBJECTIVE</div>
-          <div class="bi-objective-title" id="bi-objective-title">THE MOON</div>
-          <div class="bi-objective-sub" id="bi-objective-sub">REACH THE MOON</div>
-        </div>
-      </div>
-
-      <div class="bi-hud-panel bi-right">
-        <div class="bi-mini">SCORE<b id="bi-score">0</b></div>
-        <div class="bi-mini">RUPEES<b id="bi-coins">0</b></div>
-        <div class="bi-mini">BEST<b id="bi-best">0</b></div>
-        <div class="bi-mini">STATUS<b id="bi-status">READY</b></div>
-        <span class="bi-board-corner">LEVEL HUD</span>
-      </div>
-
-      <div class="bi-hud-panel bi-controls" aria-label="Level HUD controls">
-        <button class="bi-control-btn" id="bi-pause" type="button" aria-label="Pause" title="Pause">Ⅱ</button>
-        <button class="bi-control-btn" id="bi-settings" type="button" aria-label="Settings" title="Settings">⚙</button>
-      </div>`;
+      <div class="bi-hud-panel bi-stat"><div class="bi-stat-head"><span>HEALTH</span><span id="bi-hull-value">100 / 100</span></div><div class="bi-stat-value">HULL INTEGRITY</div><div class="bi-meter"><div class="bi-meter-fill" id="bi-hull-meter"></div></div></div>
+      <div class="bi-hud-panel bi-stat"><div class="bi-stat-head"><span>SHIELD</span><span id="bi-shield-value">100 / 100</span></div><div class="bi-stat-value">PROTECTION</div><div class="bi-meter"><div class="bi-meter-fill" id="bi-shield-meter"></div></div></div>
+      <div class="bi-hud-panel bi-stat"><div class="bi-stat-head"><span>SPEED</span><span id="bi-speed-value">80 / 100</span></div><div class="bi-stat-value">CRUISE</div><div class="bi-meter"><div class="bi-meter-fill" id="bi-speed-meter"></div></div></div>
+      <div class="bi-hud-panel bi-stat"><div class="bi-stat-head"><span>DISTANCE</span><span id="bi-distance-value">0 / 2,500</span></div><div class="bi-stat-value">MISSION PROGRESS</div><div class="bi-meter"><div class="bi-meter-fill" id="bi-distance-meter"></div></div></div>
+      <div class="bi-hud-panel bi-objective"><div class="bi-planet-orb" id="bi-planet-orb">🌕</div><div><div class="bi-kicker">PRIMARY OBJECTIVE</div><div class="bi-objective-title" id="bi-objective-title">THE MOON</div><div class="bi-objective-sub" id="bi-objective-sub">REACH THE MOON</div></div></div>
+      <div class="bi-hud-panel bi-right"><div class="bi-mini">SCORE<b id="bi-score">0</b></div><div class="bi-mini">RUPEES<b id="bi-coins">0</b></div><div class="bi-mini">BEST<b id="bi-best">0</b></div><div class="bi-mini">STATUS<b id="bi-status">READY</b></div><span class="bi-board-corner">LEVEL HUD</span></div>
+      <div class="bi-hud-panel bi-controls" aria-label="Level HUD controls"><button class="bi-control-btn" id="bi-pause" type="button" aria-label="Pause" title="Pause">Ⅱ</button><button class="bi-control-btn" id="bi-settings" type="button" aria-label="Settings" title="Settings">⚙</button></div>`;
 
     gameUI.appendChild(board);
 
-    const pause = el('bi-pause');
-    const settings = el('bi-settings');
-    if (pause) pause.addEventListener('click', () => {
+    el('bi-pause')?.addEventListener('click', () => {
       if (typeof window.togglePause === 'function') window.togglePause();
       else el('btn-pause-ingame')?.click();
     });
-    if (settings) settings.addEventListener('click', () => {
-      el('hotspot-settings')?.click();
-      el('btn-settings-levels')?.click();
+    el('bi-settings')?.addEventListener('click', () => {
+      if (typeof window.showOverlay === 'function') window.showOverlay('settings');
+      else el('btn-settings-levels')?.click();
     });
-
     return board;
   }
 
@@ -166,10 +105,8 @@
     text('bi-best', readBest().toLocaleString());
     text('bi-coins', readCoins().toLocaleString());
 
-    const hullMeter = el('bi-hull-meter');
-    const distanceMeter = el('bi-distance-meter');
-    if (hullMeter) hullMeter.style.width = `${hull}%`;
-    if (distanceMeter) distanceMeter.style.width = `${progress}%`;
+    el('bi-hull-meter').style.width = `${hull}%`;
+    el('bi-distance-meter').style.width = `${progress}%`;
 
     const gameState = window.state;
     const rawSpeed = gameState && Number.isFinite(Number(gameState.speed)) ? Number(gameState.speed) : 8;
@@ -180,11 +117,8 @@
 
     text('bi-speed-value', `${Math.round(speed)} / 100`);
     text('bi-shield-value', `${Math.round(Math.max(0, Math.min(100, shieldValue)))} / 100`);
-    const speedMeter = el('bi-speed-meter');
-    const shieldMeter = el('bi-shield-meter');
-    if (speedMeter) speedMeter.style.width = `${speed}%`;
-    if (shieldMeter) shieldMeter.style.width = `${shieldValue}%`;
-
+    el('bi-speed-meter').style.width = `${speed}%`;
+    el('bi-shield-meter').style.width = `${shieldValue}%`;
     text('bi-status', gameState?.running ? 'NOMINAL' : 'READY');
   }
 
@@ -199,16 +133,9 @@
     ensureBoard();
     update();
     syncMode();
-
-    setInterval(() => {
-      update();
-      syncMode();
-    }, 250);
+    setInterval(() => { update(); syncMode(); }, 250);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
-    init();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
 })();
