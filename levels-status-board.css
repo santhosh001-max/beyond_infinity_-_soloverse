@@ -1,0 +1,88 @@
+/* Beyond Infinity: Soloverse — Levels Mode HUD
+   This board is shown ONLY while a Levels-mode mission is running. */
+
+#bi-level-status-board{
+  position:absolute;
+  z-index:90;
+  left:10px;
+  right:10px;
+  top:10px;
+  height:clamp(72px,12vh,96px);
+  display:grid;
+  grid-template-columns:minmax(170px,1.12fr) repeat(4,minmax(100px,.88fr)) minmax(190px,1.35fr) minmax(125px,.78fr) minmax(82px,.48fr);
+  gap:6px;
+  pointer-events:none;
+  font-family:Arial,Helvetica,sans-serif;
+  color:#eaf9ff;
+  text-shadow:0 0 8px rgba(0,210,255,.28);
+}
+
+#bi-level-status-board .bi-hud-panel{
+  position:relative;
+  min-width:0;
+  overflow:hidden;
+  border:1px solid rgba(0,190,255,.68);
+  border-radius:14px;
+  background:linear-gradient(180deg,rgba(5,18,40,.94),rgba(2,7,20,.92));
+  box-shadow:inset 0 0 18px rgba(0,140,255,.13),0 0 13px rgba(0,110,255,.16);
+  clip-path:polygon(0 12%,3% 0,97% 0,100% 14%,100% 86%,97% 100%,3% 100%,0 86%);
+}
+
+#bi-level-status-board .bi-hud-panel::after{
+  content:"";
+  position:absolute;
+  left:8%;right:8%;top:0;height:1px;
+  background:linear-gradient(90deg,transparent,#27dcff,transparent);
+  opacity:.75;
+}
+
+.bi-ship-panel{display:flex;align-items:center;gap:9px;padding:7px 11px}
+.bi-ship-mark{width:43px;height:43px;flex:0 0 43px;display:grid;place-items:center;border:1px solid rgba(0,220,255,.55);border-radius:50%;font-size:22px;color:#62edff;box-shadow:0 0 13px rgba(0,200,255,.25)}
+.bi-kicker{font-size:9px;letter-spacing:1.35px;color:#73dfff;font-weight:800}
+.bi-ship-name{font-size:18px;font-weight:900;letter-spacing:1px;white-space:nowrap}
+.bi-level-name{font-size:9px;color:#a7b9d7;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bi-level-chip{position:absolute;left:10px;bottom:4px;font-size:7px;color:#6feaff;letter-spacing:1px;font-weight:900}
+
+.bi-stat{padding:7px 9px;display:flex;flex-direction:column;justify-content:center}
+.bi-stat-head{display:flex;justify-content:space-between;align-items:center;gap:5px;font-size:9px;color:#a7c7e9;font-weight:800;letter-spacing:.65px}
+.bi-stat-value{font-size:13px;font-weight:900;margin-top:2px;white-space:nowrap}
+.bi-meter{height:5px;margin-top:6px;border-radius:5px;background:rgba(72,101,145,.28);overflow:hidden}
+.bi-meter-fill{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#00aaff,#63f5ff);box-shadow:0 0 9px rgba(0,218,255,.75);transition:width .18s ease}
+
+.bi-objective{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:9px;padding:7px 11px}
+.bi-planet-orb{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:21px;background:radial-gradient(circle at 35% 30%,#f1f1f1,#8d929d 48%,#343945 72%,#11141d);box-shadow:0 0 18px rgba(180,220,255,.3)}
+.bi-objective-title{font-size:13px;font-weight:900;letter-spacing:.75px}
+.bi-objective-sub{font-size:9px;color:#54eaff;margin-top:3px;font-weight:800;letter-spacing:.55px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.bi-right{padding:7px 9px;display:grid;grid-template-columns:1fr 1fr;gap:3px 8px;align-content:center}
+.bi-mini{font-size:8px;color:#8da6c8;letter-spacing:.65px}
+.bi-mini b{display:block;color:#f2fbff;font-size:12px;margin-top:1px}
+.bi-board-corner{position:absolute;right:7px;top:5px;font-size:7px;color:#728aa9}
+
+.bi-controls{display:flex;align-items:center;justify-content:center;gap:5px;padding:6px;pointer-events:auto!important}
+.bi-control-btn{width:34px;height:34px;border:1px solid rgba(0,200,255,.7);border-radius:10px;background:linear-gradient(180deg,rgba(9,38,74,.96),rgba(3,12,28,.96));color:#dffaff;font-size:17px;font-weight:900;cursor:pointer;box-shadow:inset 0 0 9px rgba(0,180,255,.16),0 0 8px rgba(0,140,255,.14);-webkit-tap-highlight-color:transparent}
+.bi-control-btn:active{transform:scale(.94)}
+.bi-control-btn:hover{filter:brightness(1.2)}
+
+/* The old top status HUD is intentionally removed during Levels missions.
+   Infinity mode keeps its original HUD unchanged. */
+body.bi-levels-mode #path-bar,
+body.bi-levels-mode #score-bar,
+body.bi-levels-mode #hud{display:none!important}
+
+@media(max-width:1200px){
+  #bi-level-status-board{grid-template-columns:1.1fr repeat(4,.82fr) 1.22fr .72fr .48fr;gap:4px}
+  .bi-ship-name{font-size:15px}.bi-stat-value{font-size:11px}.bi-objective-title{font-size:11px}.bi-control-btn{width:30px;height:30px;font-size:15px}
+}
+
+@media(max-width:900px){
+  #bi-level-status-board{left:6px;right:6px;top:6px;height:70px;grid-template-columns:1.18fr repeat(3,.88fr) 1.15fr .75fr .48fr;gap:4px}
+  #bi-level-status-board .bi-stat:nth-of-type(4){display:none}
+  .bi-ship-mark{width:31px;height:31px;flex-basis:31px;font-size:17px}.bi-ship-name{font-size:12px}.bi-kicker,.bi-level-name{font-size:7px}.bi-stat-head{font-size:7px}.bi-stat-value{font-size:9px}.bi-meter{height:4px;margin-top:4px}.bi-planet-orb{width:29px;height:29px;font-size:15px}.bi-objective{gap:5px;padding:5px}.bi-objective-title{font-size:9px}.bi-objective-sub{font-size:7px}.bi-mini{font-size:6px}.bi-mini b{font-size:9px}.bi-control-btn{width:25px;height:25px;font-size:13px;border-radius:7px}
+}
+
+@media(max-width:650px){
+  #bi-level-status-board{height:58px;grid-template-columns:1.25fr repeat(2,.95fr) 1.1fr .72fr .46fr}
+  #bi-level-status-board .bi-stat:nth-of-type(3),#bi-level-status-board .bi-stat:nth-of-type(4){display:none}
+  .bi-ship-panel{padding:4px 6px}.bi-ship-mark{width:24px;height:24px;flex-basis:24px;font-size:13px}.bi-ship-name{font-size:9px}.bi-level-chip{display:none}.bi-objective{padding:4px}.bi-planet-orb{width:23px;height:23px;font-size:12px}.bi-objective-title{font-size:8px}.bi-objective-sub{font-size:6px}.bi-right{padding:4px}.bi-mini:nth-child(2){display:none}.bi-control-btn{width:21px;height:21px;font-size:11px}
+}
