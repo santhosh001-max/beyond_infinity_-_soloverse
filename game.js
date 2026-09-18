@@ -1347,8 +1347,6 @@ function toggleFullscreen() {
   }
 }
 window.addEventListener('keydown', e => {
-  if (e.code === 'Space') { e.preventDefault(); togglePause(); return; }
-  if (e.key === 'f' || e.key === 'F') { toggleFullscreen(); return; }
   if (p1()) {
     if (e.key === 'ArrowLeft') p1().keys.left = true;
     if (e.key === 'ArrowRight') p1().keys.right = true;
