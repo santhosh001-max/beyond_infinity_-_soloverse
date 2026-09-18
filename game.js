@@ -1223,6 +1223,7 @@ async function winLevel() {
   const updated = await Api.reportLevelResult(state.currentLevel.id, true, state.coinsThisRun);
   state.profile = normalizeProfile(updated);
   HUD.coinCount.textContent = state.profile.coins;
+  if (window.Achievements && typeof window.Achievements.close === 'function') window.Achievements.close();
   showOverlay('win');
 }
 async function loseRun() {
