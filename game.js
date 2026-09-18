@@ -35,14 +35,20 @@ function saveLocalProfile(p) { localStorage.setItem('gr_profile', JSON.stringify
 const Api = {
   async getPlayer() {
     try {
-      const r = await fetch(`${API_BASE}/player/${USERNAME}`);
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 2500);
+      const r = await fetch(`${API_BASE}/player/${USERNAME}`, { signal: controller.signal });
+      clearTimeout(timer);
       if (!r.ok) throw new Error('bad status');
       return await r.json();
     } catch (e) { return loadLocalProfile(); }
   },
   async getLevels() {
     try {
-      const r = await fetch(`${API_BASE}/levels`);
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 2500);
+      const r = await fetch(`${API_BASE}/levels`, { signal: controller.signal });
+      clearTimeout(timer);
       if (!r.ok) throw new Error();
       return await r.json();
     } catch (e) { return FALLBACK_LEVELS; }
@@ -1389,8 +1395,8 @@ function showToast(msg) {
 
 document.getElementById('hotspot-play').addEventListener('click', () => { showScreen('home'); });
 document.getElementById('hotspot-settings').addEventListener('click', () => showOverlay('settings'));
-document.getElementById('hotspot-upgrade').addEventListener('click', () => { renderShop(); showOverlay('shop'); });
-document.getElementById('hotspot-ship').addEventListener('click', () => { renderShop(); showOverlay('shop'); });
+document.getElementById('hotspot-upgrade').addEventListener('click', () => { showOverlay('shop'); });
+document.getElementById('hotspot-ship').addEventListener('click', () => { showOverlay('shop'); });
 document.getElementById('hotspot-daily-reward').addEventListener('click', () => showToast('🎁 Daily Reward — coming soon!'));
 document.getElementById('hotspot-achievements').addEventListener('click', () => showToast('🏆 Achievements — coming soon!'));
 document.getElementById('hotspot-daily-missions').addEventListener('click', () => showToast('📅 Daily Missions — coming soon!'));
@@ -1401,9 +1407,9 @@ document.getElementById('mode-levels').addEventListener('click', () => { renderL
 document.getElementById('mode-infinity').addEventListener('click', () => startInfinityWizard());
 document.getElementById('btn-level-select-back').addEventListener('click', () => showScreen('home'));
 document.getElementById('btn-settings-home').addEventListener('click', () => showOverlay('settings'));
-document.getElementById('btn-shop-home').addEventListener('click', () => { renderShop(); showOverlay('shop'); });
+document.getElementById('btn-shop-home').addEventListener('click', () => { showOverlay('shop'); });
 document.getElementById('btn-settings-levels').addEventListener('click', () => showOverlay('settings'));
-document.getElementById('btn-shop-levels').addEventListener('click', () => { renderShop(); showOverlay('shop'); });
+document.getElementById('btn-shop-levels').addEventListener('click', () => { showOverlay('shop'); });
 
 document.getElementById('btn-pause-ingame').addEventListener('click', togglePause);
 document.getElementById('btn-pause-resume').addEventListener('click', togglePause);
@@ -1415,7 +1421,7 @@ document.getElementById('btn-pause-restart').addEventListener('click', () => {
 });
 
 document.getElementById('btn-next-level').addEventListener('click', () => startLevel((state.currentLevel.level_number || 0) + 1));
-document.getElementById('btn-win-shop').addEventListener('click', () => { renderShop(); showOverlay('shop'); });
+document.getElementById('btn-win-shop').addEventListener('click', () => { showOverlay('shop'); });
 document.getElementById('btn-win-home').addEventListener('click', () => { showOverlay(null); showScreen('title'); });
 document.getElementById('btn-retry').addEventListener('click', () => { if (state.mode === 'levels') startLevel(state.currentLevel.level_number); else startInfinity(); });
 document.getElementById('btn-lose-home').addEventListener('click', () => { showOverlay(null); showScreen('title'); });
