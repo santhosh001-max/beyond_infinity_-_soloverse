@@ -1263,8 +1263,13 @@ function abilityRow(charId, ability, label) {
     </div>`;
 }
 function renderShop() {
-  document.getElementById('shipyard-rupees').textContent = state.profile.coins;
-  const list = document.getElementById('shop-list');
+  // The current Shipyard v2 is rendered by ship-upgrade.js.
+  // Keep this legacy hook safe so its old DOM is not required during boot.
+  const legacyWallet = document.getElementById('shipyard-rupees');
+  const legacyList = document.getElementById('shop-list');
+  if (!legacyWallet || !legacyList) return;
+  legacyWallet.textContent = state.profile.coins;
+  const list = legacyList;
   list.innerHTML = '';
   CHAR_IDS.forEach(charId => {
     const c = CHARACTERS[charId];
@@ -1419,6 +1424,7 @@ document.getElementById('toggle-music').addEventListener('change', e => Sound.se
 document.getElementById('toggle-sound').addEventListener('change', e => Sound.setSoundOn(e.target.checked));
 document.getElementById('volume-slider').addEventListener('input', e => Sound.setVolume(e.target.value / 100));
 document.getElementById('btn-close-settings').addEventListener('click', () => showOverlay(null));
-document.getElementById('btn-close-shop').addEventListener('click', () => showOverlay(null));
+const legacyCloseShop = document.getElementById('btn-close-shop');
+if (legacyCloseShop) legacyCloseShop.addEventListener('click', () => showOverlay(null));
 
 init();
