@@ -180,9 +180,11 @@ button.frame-hotspot,button.title-hotspot{background:transparent!important;backg
 }
 
 
-/* ULTRA-COMPACT GAMEPLAY CLUSTERS
-   Tightens the reference arrangement while preserving a small clear gap
-   between every button. P2 left / P1 mirrored right. */
+/* PRECISE COMPACT CLUSTER — based on cddd811e + latest gameplay reference
+   Attack moves slightly toward the lower corner.
+   Heal / Shield / Boost / Double Gun form a tight ring around Attack.
+   Special Move sits directly above Double Gun with a small clear gap.
+   P1 and P2 remain exact horizontal mirrors. */
 @media(min-width:701px){
   .power-button{
     width:58px!important;
@@ -193,28 +195,19 @@ button.frame-hotspot,button.title-hotspot{background:transparent!important;backg
     height:92px!important;
   }
 
-  /* Player 2 — LEFT */
-  .p2-power-cluster .power-button-6{left:6.5vw!important;top:45vh!important}
-  .p2-power-cluster .power-button-5{left:7.2vw!important;top:65vh!important}
-  .p2-power-cluster .power-button-4{left:12.3vw!important;top:65vh!important}
-  .p2-power-cluster .power-button-3{left:16.5vw!important;top:76.5vh!important}
-  .p2-power-cluster .power-button-1{left:10.0vw!important;top:87.5vh!important}
-  .p2-power-cluster .power-button-2{left:15.7vw!important;top:91.5vh!important}
+  /* P2 — LEFT */
+  .p2-power-cluster .power-button-6{left:7.5vw!important;top:67vh!important}   /* Special */
+  .p2-power-cluster .power-button-5{left:7.5vw!important;top:76vh!important}   /* Double Gun */
+  .p2-power-cluster .power-button-4{left:13vw!important;top:76vh!important}    /* Boost */
+  .p2-power-cluster .power-button-3{left:17.5vw!important;top:82vh!important}  /* Shield */
+  .p2-power-cluster .power-button-1{left:8.5vw!important;top:88vh!important}   /* Attack */
+  .p2-power-cluster .power-button-2{left:14vw!important;top:89vh!important}    /* Heal */
 
-  /* Player 1 — RIGHT, exact horizontal mirror */
-  .p1-power-cluster .power-button-6{left:93.5vw!important;top:45vh!important}
-  .p1-power-cluster .power-button-5{left:92.8vw!important;top:65vh!important}
-  .p1-power-cluster .power-button-4{left:87.7vw!important;top:65vh!important}
-  .p1-power-cluster .power-button-3{left:83.5vw!important;top:76.5vh!important}
-  .p1-power-cluster .power-button-1{left:90.0vw!important;top:87.5vh!important}
-  .p1-power-cluster .power-button-2{left:84.3vw!important;top:91.5vh!important}
-}
-
-@media(max-width:700px){
-  .power-button{width:46px!important;height:46px!important}
-  .power-button-1{width:76px!important;height:76px!important}
-}
-@media(max-width:480px){
-  .power-button{width:40px!important;height:40px!important}
-  .power-button-1{width:68px!important;height:68px!important}
+  /* P1 — RIGHT, exact mirror */
+  .p1-power-cluster .power-button-6{left:92.5vw!important;top:67vh!important}
+  .p1-power-cluster .power-button-5{left:92.5vw!important;top:76vh!important}
+  .p1-power-cluster .power-button-4{left:87vw!important;top:76vh!important}
+  .p1-power-cluster .power-button-3{left:82.5vw!important;top:82vh!important}
+  .p1-power-cluster .power-button-1{left:91.5vw!important;top:88vh!important}
+  .p1-power-cluster .power-button-2{left:86vw!important;top:89vh!important}
 }
