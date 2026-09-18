@@ -198,11 +198,16 @@
       const mapping = keyPowers[key];
       if (!mapping || pressedPowerKeys.has(key)) return;
 
-      // These keys are dedicated to gameplay powers.
       event.preventDefault();
       pressedPowerKeys.add(key);
       const player = mapping[0] === 'p2' ? p2() : p1();
-      usePower(player, mapping[1]);
+
+      // Attack keys are hold-to-fire. Other power keys activate once.
+      if (mapping[1] === 'attack') {
+        startHeldAttack(player, key);
+      } else {
+        usePower(player, mapping[1]);
+      }
     });
 
     function startHeldAttack(player, owner) {
