@@ -16,7 +16,8 @@
 
   if (typeof POWER_TYPES !== 'undefined') {
     delete POWER_TYPES.magnet;
-    delete POWER_TYPES.doubleGun;
+    // Keep Double Gun available for the new manual gameplay button.
+    POWER_TYPES.doubleGun = { icon: '🔫', duration: 8000 };
     POWER_TYPES.shield = { icon: paths.shield, duration: 6000 };
     POWER_TYPES.heart = { icon: paths.heart, duration: 0 };
     POWER_TYPES.speed = { icon: paths.speed, duration: 7000 };
