@@ -6,10 +6,16 @@
   const P2_HULL_SELECTOR = '#hull-bar-p2';
   const LOADING_SELECTOR = '#loading-screen';
   const GAME_UI_SELECTOR = '#game-ui';
+  const PAUSE_SELECTOR = '#overlay-pause';
 
   function isLoading() {
     const loading = document.querySelector(LOADING_SELECTOR);
     return !!loading && !loading.classList.contains('hidden');
+  }
+
+  function isPaused() {
+    const pause = document.querySelector(PAUSE_SELECTOR);
+    return !!pause && !pause.classList.contains('hidden');
   }
 
   function isGameUIActive() {
@@ -35,9 +41,11 @@
     const p1 = document.querySelector(P1_SELECTOR);
     const p2 = document.querySelector(P2_SELECTOR);
     const p2Hull = document.querySelector(P2_HULL_SELECTOR);
+    const pause = document.querySelector(PAUSE_SELECTOR);
 
     // Never show any power buttons during the loading screen or before gameplay.
-    if (isLoading() || !isGameUIActive()) {
+    // Power buttons are gameplay-only: hide them while the pause menu is open.
+    if (isLoading() || isPaused() || !isGameUIActive()) {
       forceHidden(p1);
       forceHidden(p2);
       return;
@@ -63,7 +71,7 @@
     const p2Hull = document.querySelector(P2_HULL_SELECTOR);
 
     // Watch the same class changes used by the game's screen/loading system.
-    [loading, gameUI, p2Hull].forEach((element) => {
+    [loading, gameUI, p2Hull, pause].forEach((element) => {
       if (!element) return;
       new MutationObserver(syncPowerButtons).observe(element, {
         attributes: true,
