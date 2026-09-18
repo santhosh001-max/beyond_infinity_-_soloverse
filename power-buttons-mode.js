@@ -75,6 +75,96 @@
     setInterval(syncPowerButtons, 100);
   }
 
+
+
+  // Gameplay actions for the six supplied power buttons.
+  // P1 (blue) and P2 (purple) share the same numbered functions.
+  function bindGameplayPowers() {
+    const buttons = document.querySelectorAll('.power-button-cluster .power-button');
+    const cooldown = new WeakMap();
+
+    function fire(player) {
+      if (!player || !player.alive) return;
+      const now = performance.now();
+      if (now - (player.lastManualShotAt || 0) < 120) return;
+      player.lastManualShotAt = now;
+      const x = player.x + player.w / 2 - 10;
+      state.bullets.push({ x, y: player.y, w: 20, h: 9, vy: -11, char: player.char });
+      if (isPowerActive(player, 'doubleGun')) {
+        state.bullets.push({ x: player.x + 4, y: player.y, w: 20, h: 9, vy: -11, char: player.char });
+        state.bullets.push({ x: player.x + player.w - 24, y: player.y, w: 20, h: 9, vy: -11, char: player.char });
+      }
+      if (typeof Sound !== 'undefined') Sound.shoot();
+    }
+
+    function activate(player, type) {
+      if (!player || !player.alive || typeof POWER_TYPES === 'undefined') return;
+      const now = performance.now();
+      player.activePowers[type] = now + (POWER_TYPES[type]?.duration || 6000);
+      if (typeof Sound !== 'undefined') Sound.power(type);
+      if (typeof renderActivePowerBadges === 'function') renderActivePowerBadges();
+    }
+
+    function special(player) {
+      if (!player || !player.alive) return;
+      const now = performance.now();
+      if (now - (player.lastSpecialAt || 0) < 1500) return;
+      player.lastSpecialAt = now;
+
+      // Blue Fighter: focused 3-shot plasma burst.
+      // Purple Fighter: wider 5-shot plasma burst.
+      const count = player.char === 'purple' ? 5 : 3;
+      const center = player.x + player.w / 2;
+      const spread = player.char === 'purple' ? 22 : 16;
+      for (let i = 0; i < count; i++) {
+        const offset = i - (count - 1) / 2;
+        state.bullets.push({
+          x: center - 10 + offset * spread,
+          y: player.y,
+          w: 20,
+          h: 11,
+          vy: -13,
+          char: player.char,
+          special: true
+        });
+      }
+      if (typeof Sound !== 'undefined') Sound.power('energy');
+    }
+
+    function usePower(player, type) {
+      if (!player || !player.alive) return;
+      const now = performance.now();
+      const last = cooldown.get(player) || {};
+      if (last[type] && now - last[type] < 350) return;
+      last[type] = now;
+      cooldown.set(player, last);
+
+      if (type === 'attack') fire(player);
+      else if (type === 'heal') {
+        player.hearts = Math.min(player.maxHearts, player.hearts + 1);
+        if (typeof renderHull === 'function') renderHull(player.index);
+        if (typeof Sound !== 'undefined') Sound.power('heart');
+      } else if (type === 'shield') activate(player, 'shield');
+      else if (type === 'boost') activate(player, 'speed');
+      else if (type === 'double-gun') activate(player, 'doubleGun');
+      else if (type === 'special') special(player);
+    }
+
+    buttons.forEach((button) => {
+      if (button.dataset.powerBound === '1') return;
+      button.dataset.powerBound = '1';
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const cluster = button.closest('.power-button-cluster');
+        const player = cluster?.id === 'power-buttons-p2' ? p2() : p1();
+        usePower(player, button.dataset.power);
+      });
+    });
+  }
+
+  bindGameplayPowers();
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', startSync, { once: true });
   } else {
