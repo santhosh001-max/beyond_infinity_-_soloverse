@@ -69,6 +69,7 @@
     const loading = document.querySelector(LOADING_SELECTOR);
     const gameUI = document.querySelector(GAME_UI_SELECTOR);
     const p2Hull = document.querySelector(P2_HULL_SELECTOR);
+    const pause = document.querySelector(PAUSE_SELECTOR);
 
     // Watch the same class changes used by the game's screen/loading system.
     [loading, gameUI, p2Hull, pause].forEach((element) => {
