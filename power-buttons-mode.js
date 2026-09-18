@@ -7,6 +7,7 @@
   const LOADING_SELECTOR = '#loading-screen';
   const GAME_UI_SELECTOR = '#game-ui';
   const PAUSE_SELECTOR = '#overlay-pause';
+  const END_OVERLAY_SELECTORS = ['#overlay-win', '#overlay-lose'];
 
   function isLoading() {
     const loading = document.querySelector(LOADING_SELECTOR);
@@ -16,6 +17,13 @@
   function isPaused() {
     const pause = document.querySelector(PAUSE_SELECTOR);
     return !!pause && !pause.classList.contains('hidden');
+  }
+
+  function isEndOverlayOpen() {
+    return END_OVERLAY_SELECTORS.some((selector) => {
+      const overlay = document.querySelector(selector);
+      return !!overlay && !overlay.classList.contains('hidden');
+    });
   }
 
   function isGameUIActive() {
@@ -45,7 +53,7 @@
 
     // Never show any power buttons during the loading screen or before gameplay.
     // Power buttons are gameplay-only: hide them while the pause menu is open.
-    if (isLoading() || isPaused() || !isGameUIActive()) {
+    if (isLoading() || isPaused() || isEndOverlayOpen() || !isGameUIActive()) {
       forceHidden(p1);
       forceHidden(p2);
       return;
@@ -70,9 +78,10 @@
     const gameUI = document.querySelector(GAME_UI_SELECTOR);
     const p2Hull = document.querySelector(P2_HULL_SELECTOR);
     const pause = document.querySelector(PAUSE_SELECTOR);
+    const endOverlays = END_OVERLAY_SELECTORS.map((selector) => document.querySelector(selector)).filter(Boolean);
 
-    // Watch the same class changes used by the game's screen/loading system.
-    [loading, gameUI, p2Hull, pause].forEach((element) => {
+    // Watch screen, pause, and end-of-level overlay class changes.
+    [loading, gameUI, p2Hull, pause, ...endOverlays].forEach((element) => {
       if (!element) return;
       new MutationObserver(syncPowerButtons).observe(element, {
         attributes: true,
