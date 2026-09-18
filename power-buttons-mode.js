@@ -101,7 +101,6 @@
     const buttons = document.querySelectorAll('.power-button-cluster .power-button');
     const cooldown = new WeakMap();
     const heldButtons = new WeakMap();
-    const activeAttackOwners = new Set();
     const FIRE_INTERVAL = 120;
 
     function fire(player) {
@@ -109,13 +108,19 @@
       const now = performance.now();
       if (now - (player.lastManualShotAt || 0) < FIRE_INTERVAL) return;
       player.lastManualShotAt = now;
-      const x = player.x + player.w / 2 - 10;
-      state.bullets.push({ x, y: player.y, w: 20, h: 9, vy: -11, char: player.char });
-      // Double Gun means exactly two beams per attack cycle.
+
       if (isPowerActive(player, 'doubleGun')) {
-        state.bullets.pop();
         state.bullets.push({ x: player.x + 4, y: player.y, w: 20, h: 9, vy: -11, char: player.char });
         state.bullets.push({ x: player.x + player.w - 24, y: player.y, w: 20, h: 9, vy: -11, char: player.char });
+      } else {
+        state.bullets.push({
+          x: player.x + player.w / 2 - 10,
+          y: player.y,
+          w: 20,
+          h: 9,
+          vy: -11,
+          char: player.char
+        });
       }
       if (typeof Sound !== 'undefined') Sound.shoot();
     }
@@ -134,8 +139,6 @@
       if (now - (player.lastSpecialAt || 0) < 1500) return;
       player.lastSpecialAt = now;
 
-      // Blue Fighter: focused 3-shot plasma burst.
-      // Purple Fighter: wider 5-shot plasma burst.
       const count = player.char === 'purple' ? 5 : 3;
       const center = player.x + player.w / 2;
       const spread = player.char === 'purple' ? 22 : 16;
@@ -173,9 +176,6 @@
       else if (type === 'special') special(player);
     }
 
-    // Keyboard shortcuts for gameplay powers.
-    // Player 1: L Attack, U Heal, J Shield, I Boost, O Double Gun, P Special.
-    // Player 2: Space Attack, Q Heal, E Shield, F Boost, C Double Gun, R Special.
     const keyPowers = {
       l: ['p1', 'attack'],
       u: ['p1', 'heal'],
@@ -192,6 +192,35 @@
     };
     const pressedPowerKeys = new Set();
 
+    function startHeldAttack(player, owner) {
+      if (!player || !player.alive || heldButtons.get(owner)) return;
+      fire(player);
+
+      const timer = setInterval(() => {
+        if (!state.running || state.paused || !player.alive || isEndOverlayOpen()) {
+          stopHeldAttack(owner);
+          return;
+        }
+        fire(player);
+      }, FIRE_INTERVAL);
+
+      heldButtons.set(owner, timer);
+    }
+
+    function stopHeldAttack(owner) {
+      const timer = heldButtons.get(owner);
+      if (timer !== undefined) clearInterval(timer);
+      heldButtons.delete(owner);
+    }
+
+    function stopEveryAttack() {
+      // Snapshot the owners first; stopping one timer must not interfere with
+      // stopping the others.
+      Array.from(document.querySelectorAll('.power-button-cluster .power-button[data-power="attack"]'))
+        .forEach((button) => stopHeldAttack(button));
+      ['l', ' '].forEach((key) => stopHeldAttack(key));
+    }
+
     window.addEventListener('keydown', (event) => {
       if (!state.running || state.paused) return;
       const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
@@ -202,56 +231,26 @@
       pressedPowerKeys.add(key);
       const player = mapping[0] === 'p2' ? p2() : p1();
 
-      // Attack keys are hold-to-fire. Other power keys activate once.
-      if (mapping[1] === 'attack') {
-        startHeldAttack(player, key);
-      } else {
-        usePower(player, mapping[1]);
-      }
+      if (mapping[1] === 'attack') startHeldAttack(player, key);
+      else usePower(player, mapping[1]);
     });
-
-    function startHeldAttack(player, owner) {
-      if (!player || !player.alive) return;
-      if (heldButtons.get(owner)) return;
-      fire(player);
-      const timer = setInterval(() => {
-        if (!state.running || state.paused || !player.alive || isEndOverlayOpen()) {
-          clearInterval(timer);
-          heldButtons.delete(owner);
-          return;
-        }
-        fire(player);
-      }, FIRE_INTERVAL);
-      heldButtons.set(owner, timer);
-      activeAttackOwners.add(owner);
-    }
-
-    function stopHeldAttack(owner) {
-      const timer = heldButtons.get(owner);
-      if (timer) clearInterval(timer);
-      heldButtons.delete(owner);
-      activeAttackOwners.delete(owner);
-    }
-
-    function stopAllHeldAttacks() {
-      activeAttackOwners.forEach((owner) => stopHeldAttack(owner));
-    }
 
     window.addEventListener('keyup', (event) => {
       const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
       pressedPowerKeys.delete(key);
-      const mapping = keyPowers[key];
-      if (mapping?.[1] === 'attack') stopHeldAttack(key);
+      if (keyPowers[key]?.[1] === 'attack') stopHeldAttack(key);
     });
 
     window.addEventListener('blur', () => {
-      stopAllHeldAttacks();
+      stopEveryAttack();
       pressedPowerKeys.clear();
     });
+
 
     buttons.forEach((button) => {
       if (button.dataset.powerBound === '1') return;
       button.dataset.powerBound = '1';
+
       button.addEventListener('pointerdown', (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -261,22 +260,25 @@
         if (button.dataset.power === 'attack') startHeldAttack(player, button);
         else usePower(player, button.dataset.power);
       });
-      button.addEventListener('pointerup', (event) => {
+
+      const releaseAttack = (event) => {
         if (button.dataset.power === 'attack') stopHeldAttack(button);
-        event.preventDefault();
-      });
-      button.addEventListener('pointercancel', () => {
-        if (button.dataset.power === 'attack') stopHeldAttack(button);
-      });
-      button.addEventListener('lostpointercapture', () => {
-        if (button.dataset.power === 'attack') stopHeldAttack(button);
-      });
+        if (event) event.preventDefault();
+      };
+
+      button.addEventListener('pointerup', releaseAttack);
+      button.addEventListener('pointercancel', releaseAttack);
+      button.addEventListener('lostpointercapture', releaseAttack);
+      button.addEventListener('touchend', releaseAttack, { passive: false });
+      button.addEventListener('touchcancel', releaseAttack, { passive: false });
     });
 
-    // Safety net: releasing/cancelling the pointer anywhere stops the
-    // continuous attack immediately, including on mobile touch browsers.
-    window.addEventListener('pointerup', stopAllHeldAttacks, true);
-    window.addEventListener('pointercancel', stopAllHeldAttacks, true);
+    // A release can occur outside the button on touch devices.
+    window.addEventListener('pointerup', stopEveryAttack, true);
+    window.addEventListener('pointercancel', stopEveryAttack, true);
+    window.addEventListener('touchend', stopEveryAttack, { capture: true, passive: false });
+    window.addEventListener('touchcancel', stopEveryAttack, { capture: true, passive: false });
+    window.addEventListener('mouseup', stopEveryAttack, true);
   }
 
   bindGameplayPowers();
