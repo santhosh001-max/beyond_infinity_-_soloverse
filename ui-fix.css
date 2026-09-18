@@ -87,3 +87,54 @@ button.frame-hotspot,button.title-hotspot{background:transparent!important;backg
   .power-button{width:50px!important;height:50px!important}
   .power-button-1{width:84px!important;height:84px!important}
 }
+
+
+/* FINAL COMPACT GAMEPLAY LAYOUT — laptop/desktop
+   Keeps every control separated; no button is stacked on another. */
+@media(min-width:701px){
+  .power-button{
+    width:clamp(54px,4.2vw,66px)!important;
+    height:clamp(54px,4.2vw,66px)!important;
+  }
+  .power-button-1{
+    width:clamp(88px,6.4vw,100px)!important;
+    height:clamp(88px,6.4vw,100px)!important;
+  }
+
+  /* Player 2 — left */
+  .p2-power-cluster .power-button-6{left:6%!important;top:43%!important}
+  .p2-power-cluster .power-button-5{left:8%!important;top:65%!important}
+  .p2-power-cluster .power-button-4{left:16%!important;top:65%!important}
+  .p2-power-cluster .power-button-3{left:12%!important;top:75%!important}
+  .p2-power-cluster .power-button-1{left:8%!important;top:85%!important}
+  .p2-power-cluster .power-button-2{left:16%!important;top:91%!important}
+
+  /* Player 1 — right, mirrored */
+  .p1-power-cluster .power-button-6{left:94%!important;top:43%!important}
+  .p1-power-cluster .power-button-4{left:84%!important;top:65%!important}
+  .p1-power-cluster .power-button-5{left:92%!important;top:65%!important}
+  .p1-power-cluster .power-button-3{left:88%!important;top:75%!important}
+  .p1-power-cluster .power-button-1{left:92%!important;top:85%!important}
+  .p1-power-cluster .power-button-2{left:84%!important;top:91%!important}
+}
+
+@media(max-width:700px){
+  .power-button{
+    width:50px!important;
+    height:50px!important;
+  }
+  .power-button-1{
+    width:82px!important;
+    height:82px!important;
+  }
+}
+@media(max-width:480px){
+  .power-button{
+    width:44px!important;
+    height:44px!important;
+  }
+  .power-button-1{
+    width:72px!important;
+    height:72px!important;
+  }
+}
