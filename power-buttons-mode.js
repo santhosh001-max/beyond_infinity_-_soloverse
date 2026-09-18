@@ -108,7 +108,9 @@
       player.lastManualShotAt = now;
       const x = player.x + player.w / 2 - 10;
       state.bullets.push({ x, y: player.y, w: 20, h: 9, vy: -11, char: player.char });
+      // Double Gun means exactly two beams total, replacing the single beam.
       if (isPowerActive(player, 'doubleGun')) {
+        state.bullets.pop();
         state.bullets.push({ x: player.x + 4, y: player.y, w: 20, h: 9, vy: -11, char: player.char });
         state.bullets.push({ x: player.x + player.w - 24, y: player.y, w: 20, h: 9, vy: -11, char: player.char });
       }
@@ -208,7 +210,7 @@
     buttons.forEach((button) => {
       if (button.dataset.powerBound === '1') return;
       button.dataset.powerBound = '1';
-      button.addEventListener('click', (event) => {
+      button.addEventListener('pointerdown', (event) => {
         event.preventDefault();
         event.stopPropagation();
         const cluster = button.closest('.power-button-cluster');
