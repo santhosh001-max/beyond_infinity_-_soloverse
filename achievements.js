@@ -46,6 +46,10 @@
   function showUnlock(def,tier){const el=ensureToast();el.querySelector('.achievement-toast-name').textContent=def.icon+' '+def.name;el.querySelector('.achievement-toast-tier').textContent=tier.toUpperCase();el.classList.remove('show');requestAnimationFrame(()=>el.classList.add('show'));clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2600)}
 
   function open(){
+    // Never open the Achievements page on top of the level-complete screen.
+    // Achievements remains available from its normal menu button after the run.
+    const win=document.getElementById('overlay-win');
+    if(win && !win.classList.contains('hidden')) return;
     let el=document.getElementById('overlay-achievements');
     if(!el){el=document.createElement('div');el.id='overlay-achievements';el.className='overlay achievements-overlay hidden';el.innerHTML='<div class="achievements-panel"><button id="btn-achievements-close" class="achievement-close">✕</button><h1>🏆 ACHIEVEMENTS</h1><p class="achievement-subtitle">Build your legacy beyond infinity</p><div id="achievement-grid"></div><div id="achievement-total"></div></div>';document.getElementById('game-container').appendChild(el);el.querySelector('#btn-achievements-close').onclick=close}
     const progress=getProgress();el.querySelector('#achievement-grid').innerHTML=defs.map(def=>card(def,progress)).join('');
