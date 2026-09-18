@@ -101,7 +101,7 @@
     const buttons = document.querySelectorAll('.power-button-cluster .power-button');
     const cooldown = new WeakMap();
     const heldButtons = new WeakMap();
-    const heldKeys = new Map();
+    const activeAttackOwners = new Set();
     const FIRE_INTERVAL = 120;
 
     function fire(player) {
@@ -223,12 +223,18 @@
         fire(player);
       }, FIRE_INTERVAL);
       heldButtons.set(owner, timer);
+      activeAttackOwners.add(owner);
     }
 
     function stopHeldAttack(owner) {
       const timer = heldButtons.get(owner);
       if (timer) clearInterval(timer);
       heldButtons.delete(owner);
+      activeAttackOwners.delete(owner);
+    }
+
+    function stopAllHeldAttacks() {
+      activeAttackOwners.forEach((owner) => stopHeldAttack(owner));
     }
 
     window.addEventListener('keyup', (event) => {
@@ -239,8 +245,7 @@
     });
 
     window.addEventListener('blur', () => {
-      heldButtons.forEach((timer) => clearInterval(timer));
-      heldButtons.clear();
+      stopAllHeldAttacks();
       pressedPowerKeys.clear();
     });
 
@@ -263,7 +268,15 @@
       button.addEventListener('pointercancel', () => {
         if (button.dataset.power === 'attack') stopHeldAttack(button);
       });
+      button.addEventListener('lostpointercapture', () => {
+        if (button.dataset.power === 'attack') stopHeldAttack(button);
+      });
     });
+
+    // Safety net: releasing/cancelling the pointer anywhere stops the
+    // continuous attack immediately, including on mobile touch browsers.
+    window.addEventListener('pointerup', stopAllHeldAttacks, true);
+    window.addEventListener('pointercancel', stopAllHeldAttacks, true);
   }
 
   bindGameplayPowers();
