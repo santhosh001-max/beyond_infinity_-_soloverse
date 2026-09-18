@@ -168,6 +168,43 @@
       else if (type === 'special') special(player);
     }
 
+    // Keyboard shortcuts for gameplay powers.
+    // Player 1: L Attack, U Heal, J Shield, I Boost, O Double Gun, P Special.
+    // Player 2: Space Attack, Q Heal, E Shield, F Boost, C Double Gun, R Special.
+    const keyPowers = {
+      l: ['p1', 'attack'],
+      u: ['p1', 'heal'],
+      j: ['p1', 'shield'],
+      i: ['p1', 'boost'],
+      o: ['p1', 'double-gun'],
+      p: ['p1', 'special'],
+      ' ': ['p2', 'attack'],
+      q: ['p2', 'heal'],
+      e: ['p2', 'shield'],
+      f: ['p2', 'boost'],
+      c: ['p2', 'double-gun'],
+      r: ['p2', 'special']
+    };
+    const pressedPowerKeys = new Set();
+
+    window.addEventListener('keydown', (event) => {
+      if (!state.running || state.paused) return;
+      const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+      const mapping = keyPowers[key];
+      if (!mapping || pressedPowerKeys.has(key)) return;
+
+      // These keys are dedicated to gameplay powers.
+      event.preventDefault();
+      pressedPowerKeys.add(key);
+      const player = mapping[0] === 'p2' ? p2() : p1();
+      usePower(player, mapping[1]);
+    });
+
+    window.addEventListener('keyup', (event) => {
+      const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+      pressedPowerKeys.delete(key);
+    });
+
     buttons.forEach((button) => {
       if (button.dataset.powerBound === '1') return;
       button.dataset.powerBound = '1';
