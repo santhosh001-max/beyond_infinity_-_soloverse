@@ -920,16 +920,9 @@ function update(dt, now) {
     p.x = Math.max(4, Math.min(canvas.width - p.w - 4, p.x));
     p.y = Math.max(4, Math.min(canvas.height - p.h - 4, p.y));
 
-    if (now - p.lastShotAt > stats.fireRate) {
-      p.lastShotAt = now;
-      if (isPowerActive(p, 'doubleGun')) {
-        state.bullets.push({ x: p.x + 4, y: p.y, w: 20, h: 9, vy: -9, char: p.char });
-        state.bullets.push({ x: p.x + p.w - 24, y: p.y, w: 20, h: 9, vy: -9, char: p.char });
-      } else {
-        state.bullets.push({ x: p.x + p.w / 2 - 10, y: p.y, w: 20, h: 9, vy: -9, char: p.char });
-      }
-      Sound.shoot();
-    }
+    // Primary attack is manual only: a beam is fired when the player
+    // presses/clicks the Attack control (or its assigned keyboard key).
+    // Do not auto-fire from the game loop.
   });
 
   const leadShip = shipStats(state.players[0].char);
