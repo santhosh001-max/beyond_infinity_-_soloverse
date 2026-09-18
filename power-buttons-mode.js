@@ -100,15 +100,18 @@
   function bindGameplayPowers() {
     const buttons = document.querySelectorAll('.power-button-cluster .power-button');
     const cooldown = new WeakMap();
+    const heldButtons = new WeakMap();
+    const heldKeys = new Map();
+    const FIRE_INTERVAL = 120;
 
     function fire(player) {
       if (!player || !player.alive) return;
       const now = performance.now();
-      if (now - (player.lastManualShotAt || 0) < 120) return;
+      if (now - (player.lastManualShotAt || 0) < FIRE_INTERVAL) return;
       player.lastManualShotAt = now;
       const x = player.x + player.w / 2 - 10;
       state.bullets.push({ x, y: player.y, w: 20, h: 9, vy: -11, char: player.char });
-      // Double Gun means exactly two beams total, replacing the single beam.
+      // Double Gun means exactly two beams per attack cycle.
       if (isPowerActive(player, 'doubleGun')) {
         state.bullets.pop();
         state.bullets.push({ x: player.x + 4, y: player.y, w: 20, h: 9, vy: -11, char: player.char });
@@ -202,9 +205,38 @@
       usePower(player, mapping[1]);
     });
 
+    function startHeldAttack(player, owner) {
+      if (!player || !player.alive) return;
+      if (heldButtons.get(owner)) return;
+      fire(player);
+      const timer = setInterval(() => {
+        if (!state.running || state.paused || !player.alive || isEndOverlayOpen()) {
+          clearInterval(timer);
+          heldButtons.delete(owner);
+          return;
+        }
+        fire(player);
+      }, FIRE_INTERVAL);
+      heldButtons.set(owner, timer);
+    }
+
+    function stopHeldAttack(owner) {
+      const timer = heldButtons.get(owner);
+      if (timer) clearInterval(timer);
+      heldButtons.delete(owner);
+    }
+
     window.addEventListener('keyup', (event) => {
       const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
       pressedPowerKeys.delete(key);
+      const mapping = keyPowers[key];
+      if (mapping?.[1] === 'attack') stopHeldAttack(key);
+    });
+
+    window.addEventListener('blur', () => {
+      heldButtons.forEach((timer) => clearInterval(timer));
+      heldButtons.clear();
+      pressedPowerKeys.clear();
     });
 
     buttons.forEach((button) => {
@@ -213,9 +245,18 @@
       button.addEventListener('pointerdown', (event) => {
         event.preventDefault();
         event.stopPropagation();
+        button.setPointerCapture?.(event.pointerId);
         const cluster = button.closest('.power-button-cluster');
         const player = cluster?.id === 'power-buttons-p2' ? p2() : p1();
-        usePower(player, button.dataset.power);
+        if (button.dataset.power === 'attack') startHeldAttack(player, button);
+        else usePower(player, button.dataset.power);
+      });
+      button.addEventListener('pointerup', (event) => {
+        if (button.dataset.power === 'attack') stopHeldAttack(button);
+        event.preventDefault();
+      });
+      button.addEventListener('pointercancel', () => {
+        if (button.dataset.power === 'attack') stopHeldAttack(button);
       });
     });
   }
