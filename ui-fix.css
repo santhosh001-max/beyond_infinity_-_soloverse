@@ -12,8 +12,8 @@
 
 /* PRECISION REFERENCE HUD */
 .power-button-cluster{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:1020!important;pointer-events:none!important}
-.power-button{position:absolute!important;width:clamp(52px,4.43vw,68px)!important;height:clamp(52px,4.43vw,68px)!important;padding:0!important;margin:0!important;border-radius:50%!important;border:2px solid rgba(255,255,255,.55)!important;background:rgba(10,18,42,.82)!important;box-shadow:0 5px 14px rgba(0,0,0,.42),inset 0 0 10px rgba(255,255,255,.12)!important;color:#fff!important;font-weight:800!important;font-size:clamp(11px,1.2vw,16px)!important;display:flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;pointer-events:auto!important;-webkit-tap-highlight-color:transparent!important;transform:translate(-50%,-50%)!important}
-.power-button-1{width:clamp(96px,8.85vw,136px)!important;height:clamp(96px,8.85vw,136px)!important;font-size:clamp(15px,1.45vw,21px)!important;z-index:3!important}
+.power-button{position:absolute!important;width:clamp(72px,7.5vw,116px)!important;height:clamp(72px,7.5vw,116px)!important;padding:0!important;margin:0!important;border-radius:50%!important;border:2px solid rgba(255,255,255,.55)!important;background:rgba(10,18,42,.82)!important;box-shadow:0 5px 14px rgba(0,0,0,.42),inset 0 0 10px rgba(255,255,255,.12)!important;color:#fff!important;font-weight:800!important;font-size:clamp(11px,1.2vw,16px)!important;display:flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;pointer-events:auto!important;-webkit-tap-highlight-color:transparent!important;transform:translate(-50%,-50%)!important}
+.power-button-1{width:clamp(120px,14.3vw,220px)!important;height:clamp(120px,14.3vw,220px)!important;font-size:clamp(15px,1.45vw,21px)!important;z-index:3!important}
 
 /* Reference alignment:
    P2 = LEFT side, P1 = RIGHT side.
@@ -48,4 +48,42 @@ button.frame-hotspot,button.title-hotspot{background:transparent!important;backg
 .power-button{width:36px!important;height:36px!important}.power-button-1{width:64px!important;height:64px!important}
 .p2-power-cluster .power-button-6{left:40px!important}.p2-power-cluster .power-button-5{left:48px!important;top:67vh!important}.p2-power-cluster .power-button-4{left:150px!important;top:67vh!important}.p2-power-cluster .power-button-3{left:110px!important;top:76vh!important}.p2-power-cluster .power-button-1{left:80px!important;top:85vh!important}.p2-power-cluster .power-button-2{left:146px!important;top:88vh!important}
 .p1-power-cluster .power-button-6{left:calc(100% - 40px)!important}.p1-power-cluster .power-button-4{left:calc(100% - 150px)!important;top:67vh!important}.p1-power-cluster .power-button-5{left:calc(100% - 48px)!important;top:67vh!important}.p1-power-cluster .power-button-3{left:calc(100% - 110px)!important;top:76vh!important}.p1-power-cluster .power-button-1{left:calc(100% - 80px)!important;top:85vh!important}.p1-power-cluster .power-button-2{left:calc(100% - 146px)!important;top:88vh!important}
+}
+
+/* FINAL GAMEPLAY POWER ART — supplied Soloverse button set.
+   P1 uses blue artwork on the RIGHT; P2 uses purple artwork on the LEFT.
+   1 Attack, 2 Heal, 3 Shield, 4 Boost, 5 Double Gun, 6 Special Move. */
+.p1-power-cluster .power-button,
+.p2-power-cluster .power-button{
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:contain!important;
+  border:0!important;
+  box-shadow:none!important;
+  background-color:transparent!important;
+}
+.p1-power-cluster .power-button span,
+.p2-power-cluster .power-button span{display:none!important}
+
+.p1-power-cluster .power-button-1{background-image:url('assets/ui/power-buttons/attack_blue.svg')!important}
+.p1-power-cluster .power-button-2{background-image:url('assets/ui/power-buttons/heal_blue.svg')!important}
+.p1-power-cluster .power-button-3{background-image:url('assets/ui/power-buttons/shield_blue.svg')!important}
+.p1-power-cluster .power-button-4{background-image:url('assets/ui/power-buttons/boost_blue.svg')!important}
+.p1-power-cluster .power-button-5{background-image:url('assets/ui/power-buttons/doublegun_blue.svg')!important}
+.p1-power-cluster .power-button-6{background-image:url('assets/ui/power-buttons/special_blue.svg')!important}
+
+.p2-power-cluster .power-button-1{background-image:url('assets/ui/power-buttons/attack_purple.svg')!important}
+.p2-power-cluster .power-button-2{background-image:url('assets/ui/power-buttons/heal_purple.svg')!important}
+.p2-power-cluster .power-button-3{background-image:url('assets/ui/power-buttons/shield_purple.svg')!important}
+.p2-power-cluster .power-button-4{background-image:url('assets/ui/power-buttons/boost_purple.svg')!important}
+.p2-power-cluster .power-button-5{background-image:url('assets/ui/power-buttons/doublegun_purple.svg')!important}
+.p2-power-cluster .power-button-6{background-image:url('assets/ui/power-buttons/special_purple.svg')!important}
+
+@media(max-width:700px){
+  .power-button{width:58px!important;height:58px!important}
+  .power-button-1{width:100px!important;height:100px!important}
+}
+@media(max-width:480px){
+  .power-button{width:50px!important;height:50px!important}
+  .power-button-1{width:84px!important;height:84px!important}
 }
