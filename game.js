@@ -1489,7 +1489,41 @@ bindHotspot('hotspot-shop', () => { showOverlay('shop'); });
 // Legacy optional hotspots — kept safe for older layouts.
 bindHotspot('hotspot-daily-reward', () => showToast('🎁 Daily Reward — coming soon!'));
 bindHotspot('hotspot-free-rewards', () => showToast('🎁 Free Rewards — coming soon!'));
+
 bindHotspot('hotspot-special-offer', () => showToast('✨ Special Offer — coming soon!'));
+
+// HARDENED TITLE MENU INPUT
+// The title artwork is scaled inside .title-frame.  Handle the four visible
+// left-menu buttons from the rendered frame itself so CSS percentage hotspots
+// cannot become misaligned on different viewport aspect ratios.
+(function installTitleMenuInput() {
+  const frame = document.querySelector('#title-screen .title-frame');
+  if (!frame) return;
+
+  frame.addEventListener('click', function (event) {
+    const rect = frame.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+
+    const x = (event.clientX - rect.left) / rect.width * 100;
+    const y = (event.clientY - rect.top) / rect.height * 100;
+
+    // The four visible menu buttons in title_screen.jpg.
+    if (x < 19 && y >= 33 && y < 72) {
+      let action = null;
+      if (y < 44.3) action = 'explore';
+      else if (y < 53.5) action = 'achievements';
+      else if (y < 62.3) action = 'daily';
+      else action = 'shop';
+
+      // Capture-phase handling is used below; this is only the action router.
+      if (action === 'explore' && window.ExplorePage?.open) window.ExplorePage.open();
+      else if (action === 'achievements' && window.Achievements?.open) window.Achievements.open();
+      else if (action === 'daily' && window.DailyMissions?.open) window.DailyMissions.open();
+      else if (action === 'shop' && typeof showOverlay === 'function') showOverlay('shop');
+      else showToast('Menu is still loading. Please try again.');
+    }
+  }, true);
+})();
 
 document.getElementById('mode-levels').addEventListener('click', () => { renderLevelSelect(); showScreen('levelSelect'); });
 document.getElementById('mode-infinity').addEventListener('click', () => startInfinityWizard());
