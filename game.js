@@ -1216,6 +1216,9 @@ async function winLevel() {
     `Level ${state.currentLevel.level_number} cleared! +${totalCoins} Rupees earned.`;
   const updated = await Api.reportLevelResult(state.currentLevel.id, true, state.coinsThisRun);
   state.profile = normalizeProfile(updated);
+  if (window.DailyMissions && typeof window.DailyMissions.recordRunEnd === 'function') {
+    window.DailyMissions.recordRunEnd({ won: true, mode: 'levels', coins: state.coinsThisRun, score: state.score });
+  }
   HUD.coinCount.textContent = state.profile.coins;
   showOverlay('win');
 }
@@ -1231,6 +1234,9 @@ async function loseRun() {
     loseTitle.textContent = '💥 GAME OVER';
     const updated = await Api.reportScore(Math.floor(state.score), state.coinsThisRun);
     state.profile = normalizeProfile(updated);
+    if (window.DailyMissions && typeof window.DailyMissions.recordRunEnd === 'function') {
+      window.DailyMissions.recordRunEnd({ won: false, mode: 'infinity', coins: state.coinsThisRun, score: state.score });
+    }
     const best = Math.max(state.profile.bestScore, Math.floor(state.score));
     state.profile.bestScore = best;
     loseSummary.textContent = `Score: ${Math.floor(state.score)}   Best: ${best}   Rupees: ${state.coinsThisRun}`;
@@ -1238,6 +1244,9 @@ async function loseRun() {
     loseTitle.textContent = '💥 SHIP DESTROYED';
     const updated = await Api.reportLevelResult(state.currentLevel.id, false, state.coinsThisRun);
     state.profile = normalizeProfile(updated);
+    if (window.DailyMissions && typeof window.DailyMissions.recordRunEnd === 'function') {
+      window.DailyMissions.recordRunEnd({ won: false, mode: 'levels', coins: state.coinsThisRun, score: state.score });
+    }
     loseSummary.textContent = `Your ship was destroyed on Level ${state.currentLevel.level_number}. Rupees collected: ${state.coinsThisRun}.`;
   }
   HUD.coinCount.textContent = state.profile.coins;
