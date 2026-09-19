@@ -1458,14 +1458,38 @@ function showToast(msg) {
   }, 1600);
 }
 
-document.getElementById('hotspot-play').addEventListener('click', () => { showScreen('home'); });
-document.getElementById('hotspot-settings').addEventListener('click', () => showOverlay('settings'));
-document.getElementById('hotspot-upgrade').addEventListener('click', () => { showOverlay('shop'); });
-document.getElementById('hotspot-ship').addEventListener('click', () => { showOverlay('shop'); });
-document.getElementById('hotspot-daily-reward').addEventListener('click', () => showToast('🎁 Daily Reward — coming soon!'));
-document.getElementById('hotspot-achievements').addEventListener('click', () => showToast('🏆 Achievements — coming soon!'));
-document.getElementById('hotspot-free-rewards').addEventListener('click', () => showToast('🎁 Free Rewards — coming soon!'));
-document.getElementById('hotspot-special-offer').addEventListener('click', () => showToast('✨ Special Offer — coming soon!'));
+function bindHotspot(id, handler) {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('click', handler);
+}
+
+bindHotspot('hotspot-play', () => { showScreen('home'); });
+bindHotspot('hotspot-settings', () => showOverlay('settings'));
+bindHotspot('hotspot-upgrade', () => { showOverlay('shop'); });
+bindHotspot('hotspot-ship', () => { showOverlay('shop'); });
+
+// Current title-screen menu
+bindHotspot('hotspot-explore', () => {
+  if (window.ExplorePage && typeof window.ExplorePage.open === 'function') {
+    window.ExplorePage.open();
+  }
+});
+bindHotspot('hotspot-daily-missions', () => {
+  if (window.DailyMissions && typeof window.DailyMissions.open === 'function') {
+    window.DailyMissions.open();
+  }
+});
+bindHotspot('hotspot-achievements', () => {
+  if (window.Achievements && typeof window.Achievements.open === 'function') {
+    window.Achievements.open();
+  }
+});
+bindHotspot('hotspot-shop', () => { showOverlay('shop'); });
+
+// Legacy optional hotspots — kept safe for older layouts.
+bindHotspot('hotspot-daily-reward', () => showToast('🎁 Daily Reward — coming soon!'));
+bindHotspot('hotspot-free-rewards', () => showToast('🎁 Free Rewards — coming soon!'));
+bindHotspot('hotspot-special-offer', () => showToast('✨ Special Offer — coming soon!'));
 
 document.getElementById('mode-levels').addEventListener('click', () => { renderLevelSelect(); showScreen('levelSelect'); });
 document.getElementById('mode-infinity').addEventListener('click', () => startInfinityWizard());
