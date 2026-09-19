@@ -362,6 +362,16 @@ function pickAlienTier() {
 // ==========================================================
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
+let gameZoom = 1;
+const ZOOM_MIN = 0.6;
+const ZOOM_MAX = 1.8;
+const ZOOM_STEP = 0.1;
+function setGameZoom(next) {
+  gameZoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, Math.round(next * 10) / 10));
+  if (typeof showToast === 'function') showToast(`Zoom ${Math.round(gameZoom * 100)}%`);
+}
+function zoomIn() { setGameZoom(gameZoom + ZOOM_STEP); }
+function zoomOut() { setGameZoom(gameZoom - ZOOM_STEP); }
 function resizeCanvas() {
   canvas.width = canvas.clientWidth;
   canvas.height = canvas.clientHeight;
@@ -1078,6 +1088,10 @@ function project(obj) {
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.save();
+  ctx.translate(canvas.width / 2, canvas.height / 2);
+  ctx.scale(gameZoom, gameZoom);
+  ctx.translate(-canvas.width / 2, -canvas.height / 2);
   drawScrollingBackground();
   drawHorizonFog();
 
@@ -1101,6 +1115,7 @@ function draw() {
   state.alienBullets.forEach(b => drawProjectedRect(b, '#ff1744'));
 
   state.players.forEach(p => { if (p.alive) drawShip(p); });
+  ctx.restore();
 }
 
 function drawProjectedRect(obj, color) {
@@ -1370,6 +1385,61 @@ window.addEventListener('keyup', e => {
 
 window.addEventListener('pointerdown', () => { Sound.ensureCtx(); Sound.startMusic(); }, { once: true });
 document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
+
+// Keyboard controls:
+// Z = zoom in, X = zoom out, Backspace = back, Enter = fullscreen.
+function handleKeyboardUtilityControls(e) {
+  // Do not hijack keys while typing in an input/textarea.
+  const tag = e.target?.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target?.isContentEditable) return;
+
+  if (e.key === 'z' || e.key === 'Z') {
+    e.preventDefault();
+    zoomIn();
+    return;
+  }
+  if (e.key === 'x' || e.key === 'X') {
+    e.preventDefault();
+    zoomOut();
+    return;
+  }
+  if (e.key === 'Enter') {
+    // Enter is reserved for fullscreen in the game controls.
+    e.preventDefault();
+    toggleFullscreen();
+    return;
+  }
+  if (e.key === 'Backspace') {
+    e.preventDefault();
+    Sound.click();
+
+    // Backspace follows the same navigation direction as the visible
+    // Back buttons, without leaving the game website.
+    if (!Overlays.settings.classList.contains('hidden') ||
+        !Overlays.shop.classList.contains('hidden') ||
+        !Overlays.infinitySetup.classList.contains('hidden')) {
+      showOverlay(null);
+    } else if (!Overlays.pause.classList.contains('hidden')) {
+      showOverlay(null);
+      if (state.running) state.paused = false;
+    } else if (!Overlays.win.classList.contains('hidden') ||
+               !Overlays.lose.classList.contains('hidden')) {
+      state.running = false;
+      showOverlay(null);
+      showScreen('home');
+    } else if (!Screens.levelSelect.classList.contains('hidden')) {
+      showScreen('home');
+    } else if (!Screens.home.classList.contains('hidden')) {
+      showScreen('title');
+    } else if (!Screens.game.classList.contains('hidden')) {
+      state.running = false;
+      state.paused = false;
+      showOverlay(null);
+      showScreen('home');
+    }
+  }
+}
+window.addEventListener('keydown', handleKeyboardUtilityControls);
 document.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => Sound.click()));
 
 let toastTimer = null;
