@@ -666,6 +666,10 @@ async function startLevel(levelNumber) {
   showScreen('game');
   resetRunState();
 
+  if (window.PlanetScienceCard && typeof window.PlanetScienceCard.show === 'function') {
+    await window.PlanetScienceCard.show(level);
+  }
+
   HUD.pathBar.classList.remove('hidden');
   HUD.scoreBar.classList.add('hidden');
   HUD.levelLabel.textContent = `Level ${level.level_number}: ${level.name}`;
