@@ -1467,7 +1467,6 @@ document.getElementById('hotspot-upgrade').addEventListener('click', () => { sho
 document.getElementById('hotspot-ship').addEventListener('click', () => { showOverlay('shop'); });
 document.getElementById('hotspot-daily-reward').addEventListener('click', () => showToast('🎁 Daily Reward — coming soon!'));
 document.getElementById('hotspot-achievements').addEventListener('click', () => showToast('🏆 Achievements — coming soon!'));
-document.getElementById('hotspot-daily-missions').addEventListener('click', () => showToast('📅 Daily Missions — coming soon!'));
 document.getElementById('hotspot-free-rewards').addEventListener('click', () => showToast('🎁 Free Rewards — coming soon!'));
 document.getElementById('hotspot-special-offer').addEventListener('click', () => showToast('✨ Special Offer — coming soon!'));
 
