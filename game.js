@@ -1382,15 +1382,37 @@ function showToast(msg) {
   }, 1600);
 }
 
-document.getElementById('hotspot-play').addEventListener('click', () => { showScreen('home'); });
-document.getElementById('hotspot-settings').addEventListener('click', () => showOverlay('settings'));
-document.getElementById('hotspot-upgrade').addEventListener('click', () => { renderShop(); showOverlay('shop'); });
-document.getElementById('hotspot-ship').addEventListener('click', () => { renderShop(); showOverlay('shop'); });
-document.getElementById('hotspot-daily-reward').addEventListener('click', () => showToast('🎁 Daily Reward — coming soon!'));
-document.getElementById('hotspot-achievements').addEventListener('click', () => showToast('🏆 Achievements — coming soon!'));
-document.getElementById('hotspot-daily-missions').addEventListener('click', () => showToast('📅 Daily Missions — coming soon!'));
-document.getElementById('hotspot-free-rewards').addEventListener('click', () => showToast('🎁 Free Rewards — coming soon!'));
-document.getElementById('hotspot-special-offer').addEventListener('click', () => showToast('✨ Special Offer — coming soon!'));
+function bindTitleMenu(id, handler) {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('click', handler);
+}
+bindTitleMenu('hotspot-play', () => { showScreen('home'); });
+bindTitleMenu('hotspot-settings', () => showOverlay('settings'));
+bindTitleMenu('hotspot-upgrade', () => { renderShop(); showOverlay('shop'); });
+bindTitleMenu('hotspot-ship', () => { renderShop(); showOverlay('shop'); });
+bindTitleMenu('hotspot-explore', () => { if (window.ExplorePage?.open) window.ExplorePage.open(); });
+bindTitleMenu('hotspot-achievements', () => { if (window.Achievements?.open) window.Achievements.open(); });
+bindTitleMenu('hotspot-daily-missions', () => { if (window.DailyMissions?.open) window.DailyMissions.open(); });
+bindTitleMenu('hotspot-shop', () => { renderShop(); showOverlay('shop'); });
+bindTitleMenu('hotspot-special-offer', () => showToast('✨ Special Offer — coming soon!'));
+
+// Fallback for scaled title artwork: route clicks by the actual rendered frame.
+(function(){
+  const frame=document.querySelector('#title-screen .title-frame');
+  if(!frame)return;
+  frame.addEventListener('click',function(e){
+    const r=frame.getBoundingClientRect();
+    if(!r.width||!r.height)return;
+    const x=(e.clientX-r.left)/r.width*100;
+    const y=(e.clientY-r.top)/r.height*100;
+    if(x<22&&y>=33&&y<72){
+      if(y<43) window.ExplorePage?.open();
+      else if(y<52) window.Achievements?.open();
+      else if(y<61) window.DailyMissions?.open();
+      else { renderShop(); showOverlay('shop'); }
+    }
+  },true);
+})();
 
 document.getElementById('mode-levels').addEventListener('click', () => { renderLevelSelect(); showScreen('levelSelect'); });
 document.getElementById('mode-infinity').addEventListener('click', () => startInfinityWizard());
