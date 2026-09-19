@@ -26,6 +26,17 @@ r.querySelectorAll('[data-close]').forEach(e=>e.onclick=close);r.querySelectorAl
 let timer;
 function clock(){clearInterval(timer);let e=document.getElementById('dm-clock');if(!e)return;function t(){let n=new Date(),z=new Date(n);z.setHours(24,0,0,0);let s=Math.max(0,z-n)/1000,h=Math.floor(s/3600),m=Math.floor(s%3600/60),q=Math.floor(s%60);e.textContent=pad(h)+':'+pad(m)+':'+pad(q);if(s<=0)render()}t();timer=setInterval(t,1000)}
 function refresh(){let b=document.getElementById('daily-mission-badge');if(!b)return;let n=load().missions.filter(m=>m.progress>=m.target&&!m.claimed).length;b.textContent=n?n:'';b.classList.toggle('has-count',n>0)}
-window.DailyMissions={open,close,render,refresh,record,getData:load};
+function recordRunEnd(o){
+  o=o||{};
+  // Count a run when the run actually ends. A won level also advances
+  // the level objectives; Infinity uses the final score.
+  record({
+    won:!!o.won,
+    mode:o.mode||'levels',
+    coins:Number(o.coins)||0,
+    score:Number(o.score)||0
+  });
+}
+window.DailyMissions={open,close,render,refresh,record,recordRunEnd,getData:load};
 document.addEventListener('DOMContentLoaded',()=>{refresh();let b=document.getElementById('hotspot-daily-missions');if(b)b.addEventListener('click',()=>{if(typeof Sound!=='undefined'&&Sound.click)Sound.click();open()})});
 })();
